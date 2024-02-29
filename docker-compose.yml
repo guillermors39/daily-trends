@@ -14,8 +14,7 @@ services:
       - "${DOCKER_HTTP_PORT}:${PORT}"
     networks:
       - local
-    # command: /entrypoint.sh ${NODE_ENV}
-    command: tail -f /dev/null
+    command: /entrypoint.sh ${NODE_ENV}
   db:
     image: mongo:7.0
     container_name: ${DOCKER_CONTAINER_NAME_DB}
