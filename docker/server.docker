@@ -1,0 +1,18 @@
+FROM node:21.6.0-bullseye
+
+ARG UID=1000
+ARG GID=1000
+
+RUN if [ $UID -ne 1000 ] || [ $GID -ne 1000 ]; then \
+    groupmod -g $GID node && \
+    usermod -u $UID -g $GID node; \
+fi
+
+RUN npm install -g typescript
+
+COPY ./entrypoints/server.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+USER node:node
+
+WORKDIR /app

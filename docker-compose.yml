@@ -1,0 +1,34 @@
+version: "3"
+services:
+  api:
+    build:
+      context: ./docker
+      dockerfile: server.docker
+      args:
+        - UID=${DOCKER_UID}
+        - GID=${DOCKER_GID}
+    container_name: ${DOCKER_CONTAINER_NAME_SERVER}
+    volumes:
+      - ${DOCKER_DIRECTORY_APP}:/app
+    ports:
+      - "${DOCKER_HTTP_PORT}:${PORT}"
+    networks:
+      - local
+    # command: /entrypoint.sh ${NODE_ENV}
+    command: tail -f /dev/null
+  db:
+    image: mongo:7.0
+    container_name: ${DOCKER_CONTAINER_NAME_DB}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DOCKER_PORT_DB}:27017"
+    volumes:
+      - ${DOCKER_DIRECTORY_DB}:/data/db
+    networks:
+      - local
+networks:
+  local:
+    driver: bridge
+    name: ${DOCKER_NETWORK_INTERNAL_NAME}
