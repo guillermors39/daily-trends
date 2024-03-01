@@ -6,6 +6,7 @@ import {
   TSchemasConfig,
 } from '../../../shared/infrastructure/contracts';
 import { FeedCreateHandler } from '../../application/handlers';
+import { TFeedCreate } from '../../domain/types';
 import { FeedResource } from '../resources/feed.resource';
 
 export class FeedsCreateController implements IController {
@@ -25,7 +26,7 @@ export class FeedsCreateController implements IController {
   }
 
   async execute(req: Request, res: Response): Promise<void> {
-    const body = req.body;
+    const body = req.body as TFeedCreate;
 
     const entity = await this.creator.execute(body);
 
