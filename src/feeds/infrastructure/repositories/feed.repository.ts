@@ -1,17 +1,16 @@
+import { IMapper } from '../../../shared/infrastructure/contracts';
 import { IFeedCreateRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
-import { FeedEntityToModelMapper } from '../mappers/feed.mapper';
-import { FeedModel, IFeedModel } from '../models';
+import { IFeedModel, TFeedModelDto } from '../models';
 
 export class FeedRepository implements IFeedCreateRepository {
-  private readonly model: IFeedModel;
-
-  constructor() {
-    this.model = FeedModel;
-  }
+  constructor(
+    private readonly model: IFeedModel,
+    private readonly mapper: IMapper<FeedEntity, TFeedModelDto>,
+  ) {}
 
   async create(feed: FeedEntity): Promise<void> {
-    const dto = FeedEntityToModelMapper.execute(feed);
+    const dto = this.mapper.fromEntityToInfraDto(feed);
 
     await this.model.create(dto);
   }
