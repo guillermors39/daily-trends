@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { FeedCreateHandler } from '../../application/handlers';
 import { FeedResource } from '../resources/feed.resource';
 
-export class FeedsController {
+export class FeedsCreateController {
   constructor(private readonly creator: FeedCreateHandler) {}
 
   async create(req: Request, res: Response): Promise<void> {

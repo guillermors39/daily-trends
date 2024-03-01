@@ -1,1 +1,1 @@
-export * from './feeds.controller';
+export * from './feeds-create.controller';

@@ -1,11 +1,11 @@
 import express from 'express';
 
 import { TRoute } from '../../../shared/infrastructure/types';
-import { feedsController } from '../providers';
+import { feedsCreateController } from '../providers';
 
 const feedRouter = express.Router();
 
-feedRouter.post('/', feedsController.create.bind(feedsController));
+feedRouter.post('/', feedsCreateController.create.bind(feedsCreateController));
 
 export const feedRoute: TRoute = {
   uri: '/feeds',
