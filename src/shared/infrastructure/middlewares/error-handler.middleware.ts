@@ -1,13 +1,18 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, Response } from 'express';
 
 import { ClientError } from '../errors';
 
-const errorHandlerMiddleware: ErrorRequestHandler = (error, req, res) => {
+const errorHandlerMiddleware: ErrorRequestHandler = (error, req, res, next) => {
   if (error instanceof ClientError) {
     res.status(error.statusCode).json({ error: error.message });
   } else {
-    // Internal Server Error
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!next) {
+      (req as unknown as Response)
+        .status(500)
+        .json({ error: 'Internal Server Error' });
+    } else {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 };
 
