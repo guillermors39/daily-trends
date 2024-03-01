@@ -1,7 +1,10 @@
+import { BaseJsonResource } from '../../../shared/infrastructure/resources';
 import { FeedEntity } from '../../domain/entities';
 
-export class FeedResource {
-  constructor(private readonly entity: FeedEntity) {}
+export class FeedResource extends BaseJsonResource {
+  constructor(private readonly entity: FeedEntity) {
+    super();
+  }
 
   response(): object {
     return {
