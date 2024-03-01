@@ -1,3 +1,3 @@
 export abstract class BaseJsonResource {
-  abstract response(): object | object[];
+  abstract response(): object | object[] | null;
 }
