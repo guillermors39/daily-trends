@@ -5,12 +5,9 @@ import mongoose, {
   SchemaTypes,
 } from 'mongoose';
 
-import { Properties } from '../../../shared/domain/types';
-import { FeedEntity } from '../../domain/entities';
+import { TFeedDto } from '../../domain/types';
 
-export type TFeedModelDto = Properties<FeedEntity>;
-
-const FeedSchema = new Schema<TFeedModelDto>(
+const FeedSchema = new Schema<TFeedDto>(
   {
     uuid: {
       type: SchemaTypes.String,
@@ -34,8 +31,8 @@ const FeedSchema = new Schema<TFeedModelDto>(
   },
 );
 
-export const FeedModel = mongoose.model<TFeedModelDto>('feeds', FeedSchema);
+export const FeedModel = mongoose.model<TFeedDto>('feeds', FeedSchema);
 
-export type IFeedModel = Model<TFeedModelDto>;
+export type IFeedModel = Model<TFeedDto>;
 
-export type TFeedModelInstance = HydratedDocument<TFeedModelDto>;
+export type TFeedModelInstance = HydratedDocument<TFeedDto>;
