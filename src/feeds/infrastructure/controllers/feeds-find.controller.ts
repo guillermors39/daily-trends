@@ -11,12 +11,14 @@ export class FeedsFindController implements IController {
   schema(): TSchemasConfig {
     return {
       params: Joi.object({
-        uuid: Joi.string().required(),
+        uuid: Joi.string().uuid().required(),
       }),
     };
   }
 
   async execute(req: Request, res: Response): Promise<void> {
+    const uuid = req.params.uuid;
+
     res
       .json({
         data: null,
