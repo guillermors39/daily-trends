@@ -1,16 +1,22 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, SchemaTypes } from 'mongoose';
 
 const FeedSchema = new Schema(
   {
-    uuid: String,
-    title: String,
-    subtitle: String,
-    authors: Array,
-    date: Date,
-    location: String,
+    uuid: {
+      type: SchemaTypes.UUID,
+      index: true,
+    },
+    title: SchemaTypes.String,
+    subtitle: SchemaTypes.String,
+    authors: SchemaTypes.Array,
+    date: {
+      type: SchemaTypes.Date,
+      index: true,
+    },
+    location: SchemaTypes.String,
     source: {
-      code: String,
-      url: String,
+      code: SchemaTypes.String,
+      url: SchemaTypes.String,
     },
   },
   {
@@ -19,3 +25,5 @@ const FeedSchema = new Schema(
 );
 
 export const FeedModel = mongoose.model('feeds', FeedSchema);
+
+export type IFeedModel = typeof FeedModel;

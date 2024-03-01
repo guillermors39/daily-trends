@@ -1,16 +1,21 @@
 import { Request, Response } from 'express';
 
-import { FeedModel } from '../models';
+import { FeedCreateHandler } from '../../application/handlers';
+import { FeedResource } from '../resources/feed.resource';
 
 export class FeedsController {
+  constructor(private readonly creator: FeedCreateHandler) {}
+
   async create(req: Request, res: Response): Promise<void> {
     const body = req.body;
 
-    const doc = await FeedModel.create({ uuid: crypto.randomUUID(), ...body });
+    const entity = await this.creator.execute(body);
+
+    const resource = new FeedResource(entity);
 
     res
       .json({
-        data: doc.toObject(),
+        data: resource.response(),
       })
       .status(200);
   }

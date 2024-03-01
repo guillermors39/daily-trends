@@ -98,3 +98,5 @@ export type DateToISOString<T> = T extends Date
       : T extends object
         ? { [K in keyof T as Uncapitalize<string & K>]: DateToISOString<T[K]> }
         : T;
+
+export type TUuid = `${string}-${string}-${string}-${string}-${string}`;
