@@ -1,16 +1,32 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, {
+  HydratedDocument,
+  Model,
+  Schema,
+  SchemaTypes,
+} from 'mongoose';
 
-const FeedSchema = new Schema(
+import { Properties } from '../../../shared/domain/types';
+import { FeedEntity } from '../../domain/entities';
+
+export type TFeedModelDto = Properties<FeedEntity>;
+
+const FeedSchema = new Schema<TFeedModelDto>(
   {
-    uuid: String,
-    title: String,
-    subtitle: String,
-    authors: Array,
-    date: Date,
-    location: String,
+    uuid: {
+      type: SchemaTypes.String,
+      index: true,
+    },
+    title: SchemaTypes.String,
+    subtitle: SchemaTypes.String,
+    authors: SchemaTypes.Array,
+    date: {
+      type: SchemaTypes.Date,
+      index: true,
+    },
+    location: SchemaTypes.String,
     source: {
-      code: String,
-      url: String,
+      code: SchemaTypes.String,
+      url: SchemaTypes.String,
     },
   },
   {
@@ -18,4 +34,8 @@ const FeedSchema = new Schema(
   },
 );
 
-export const FeedModel = mongoose.model('feeds', FeedSchema);
+export const FeedModel = mongoose.model<TFeedModelDto>('feeds', FeedSchema);
+
+export type IFeedModel = Model<TFeedModelDto>;
+
+export type TFeedModelInstance = HydratedDocument<TFeedModelDto>;

@@ -1,7 +1,7 @@
-import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 
 import { TConfig } from './configs';
+import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 import { MongooseConnectorService } from './services';
 import { TRoute } from './types';
 
@@ -23,6 +23,8 @@ export class App {
 
     await this.database();
 
+    this.setErrorHandler();
+
     this.express.listen(this.port, () => {
       console.log(`[APP] - Starting application on port: ${this.port}`);
     });
@@ -37,7 +39,11 @@ export class App {
   }
 
   private setMiddlewares() {
-    this.express.use(bodyParser.json());
+    this.express.use(express.json());
+  }
+
+  private setErrorHandler() {
+    this.express.use(errorHandlerMiddleware);
   }
 
   private setRoutes() {
