@@ -1,6 +1,6 @@
 import { HydratedDocument } from 'mongoose';
 
 export interface IMapper<Entity, ModelDto> {
-  fromEntityToInfraDto(entity: Entity): ModelDto;
+  fromEntityToDto(entity: Entity): ModelDto;
   fromInfraToDto(model: HydratedDocument<ModelDto>): ModelDto;
 }
