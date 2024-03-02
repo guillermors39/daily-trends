@@ -1,7 +1,7 @@
 import { AggregateEntity } from '../../../shared/domain/entities';
 import { TUuid } from '../../../shared/domain/types';
 import { ESourceCode } from '../enums';
-import { TFeedCreate } from '../types';
+import { TFeedCreate, TFeedDto } from '../types';
 
 class Source {
   constructor(
@@ -16,7 +16,7 @@ class Source {
 
 export class FeedEntity extends AggregateEntity {
   constructor(
-    public readonly uuid: string,
+    public readonly uuid: TUuid,
     public readonly title: string,
     public readonly subtitle: string,
     public readonly body: string,
@@ -43,5 +43,9 @@ export class FeedEntity extends AggregateEntity {
       source,
       new Date(date),
     );
+  }
+
+  static fromDto(dto: TFeedDto): FeedEntity {
+    return this.create(dto.uuid, dto);
   }
 }

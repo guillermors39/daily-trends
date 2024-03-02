@@ -1,9 +1,10 @@
 import { IMapper } from '../../../shared/infrastructure/contracts';
 import { FeedEntity } from '../../domain/entities';
-import { TFeedModelDto, TFeedModelInstance } from '../models';
+import { TFeedDto } from '../../domain/types';
+import { TFeedModelInstance } from '../models';
 
-export class FeedMapper implements IMapper<FeedEntity, TFeedModelDto> {
-  fromEntityToInfraDto(entity: FeedEntity): TFeedModelDto {
+export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
+  fromEntityToInfraDto(entity: FeedEntity): TFeedDto {
     return {
       uuid: entity.uuid,
       title: entity.title,
@@ -19,7 +20,7 @@ export class FeedMapper implements IMapper<FeedEntity, TFeedModelDto> {
     };
   }
 
-  fromInfraToDto(model: TFeedModelInstance): TFeedModelDto {
+  fromInfraToDto(model: TFeedModelInstance): TFeedDto {
     const { uuid, title, subtitle, authors, body, location, date, source } =
       model.toObject();
 

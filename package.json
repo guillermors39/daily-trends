@@ -9,7 +9,8 @@
     "build": "tsc -p tsconfig.prod.json",
     "lint": "eslint --ignore-path .gitignore . --ext .js,.ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "deps:check": "depcruise src"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
+    "dependency-cruiser": "^16.2.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",

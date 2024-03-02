@@ -1,28 +1,28 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
+import { TUuid } from '../../../shared/domain/types';
 import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
 import { BaseController } from '../../../shared/infrastructure/controllers';
-import { FeedCreateHandler } from '../../application/handlers';
-import { TFeedCreate } from '../../domain/types';
+import { FeedFindHandler } from '../../application/handlers';
 import { FeedResource } from '../resources/feed.resource';
-import { body } from '../validations';
+import { params } from '../validations';
 
-export class FeedsCreateController extends BaseController {
-  constructor(private readonly creator: FeedCreateHandler) {
+export class FeedsFindController extends BaseController {
+  constructor(private readonly finder: FeedFindHandler) {
     super();
   }
 
   schema(): TSchemasConfig {
     return {
-      body: body(),
+      params: params(),
     };
   }
 
   async run(req: Request, res: Response): Promise<void> {
-    const body = req.body as TFeedCreate;
+    const uuid = req.params.uuid as TUuid;
 
-    const entity = await this.creator.execute(body);
+    const entity = await this.finder.execute(uuid);
 
     const resource = new FeedResource(entity);
 

@@ -1,9 +1,12 @@
-import { IUuidGenerator } from '../../../shared/domain/contracts/app.contract';
+import {
+  IHandler,
+  IUuidGenerator,
+} from '../../../shared/domain/contracts/app.contract';
 import { IFeedCreateRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedCreate } from '../../domain/types';
 
-export class FeedCreateHandler {
+export class FeedCreateHandler implements IHandler<TFeedCreate, FeedEntity> {
   constructor(
     private readonly uuidGenerator: IUuidGenerator,
     private readonly repository: IFeedCreateRepository,
@@ -14,11 +17,7 @@ export class FeedCreateHandler {
 
     const entity = FeedEntity.create(uuid, dto);
 
-    try {
-      await this.repository.create(entity);
-    } catch (error) {
-      // TODO: either pattern
-    }
+    await this.repository.create(entity);
 
     return entity;
   }

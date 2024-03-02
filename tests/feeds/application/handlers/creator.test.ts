@@ -9,7 +9,7 @@ import { FeedCreateMother } from '../../domain/mothers/create.mother';
 
 const uuidMoked = faker.string.uuid() as TUuid;
 
-describe('FeedCreateHandler', () => {
+describe('FeedCreateHandler Test', () => {
   let handler: FeedCreateHandler;
   let uuidGenerator: IUuidGenerator;
   let repository: IFeedCreateRepository;
