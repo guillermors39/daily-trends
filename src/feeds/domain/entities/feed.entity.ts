@@ -14,7 +14,7 @@ class Source {
   }
 }
 
-export class FeedEntity extends AggregateEntity {
+export class FeedEntity extends AggregateEntity implements TFeedDto {
   constructor(
     private _uuid: TUuid,
     private _title: string,
