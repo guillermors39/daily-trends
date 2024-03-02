@@ -4,7 +4,7 @@ import { TFeedDto } from '../../domain/types';
 import { TFeedModelInstance } from '../models';
 
 export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
-  fromEntityToInfraDto(entity: FeedEntity): TFeedDto {
+  fromEntityToDto(entity: FeedEntity): TFeedDto {
     return {
       uuid: entity.uuid,
       title: entity.title,

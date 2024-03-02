@@ -22,7 +22,7 @@ describe('FeedRepository Test', () => {
 
   it('create - ok', async () => {
     const feed = FeedEntityMother.create();
-    const mappedDto = feedMapper.fromEntityToInfraDto(feed);
+    const mappedDto = feedMapper.fromEntityToDto(feed);
 
     await repository.create(feed);
 

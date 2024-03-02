@@ -8,3 +8,7 @@ export interface IFeedCreateRepository {
 export interface IFeedFindRepository {
   find(uuid: TUuid): Promise<FeedEntity | null>;
 }
+
+export interface IFeedUpdateRepository {
+  update(feed: FeedEntity): Promise<void>;
+}
