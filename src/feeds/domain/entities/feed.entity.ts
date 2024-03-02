@@ -78,7 +78,20 @@ export class FeedEntity extends AggregateEntity {
   }
 
   static fromDto(dto: TFeedDto): FeedEntity {
-    return this.create(dto.uuid, dto);
+    const source = new Source(dto.source.code, dto.source.url);
+
+    const { uuid, title, subtitle, body, location, authors, date } = dto;
+
+    return new FeedEntity(
+      uuid,
+      title,
+      subtitle,
+      body,
+      location,
+      authors,
+      source,
+      new Date(date),
+    );
   }
 
   update({ title, subtitle, body, location, authors }: TFeedCreate): void {
