@@ -1,6 +1,10 @@
 import { uuidGenerator } from '../../../shared/infrastructure/providers/app.providers';
 import { FeedCreateHandler, FeedFindHandler } from '../../application/handlers';
-import { FeedsCreateController, FeedsFindController } from '../controllers';
+import {
+  FeedsCreateController,
+  FeedsFindController,
+  FeedsUpdateController,
+} from '../controllers';
 import { FeedMapper } from '../mappers/feed.mapper';
 import { FeedModel } from '../models';
 import { FeedRepository } from '../repositories/feed.repository';
@@ -17,9 +21,12 @@ const feedsCreateController = new FeedsCreateController(feedCreateHandler);
 
 const feedsFindController = new FeedsFindController(feedFindHandler);
 
+const feedsUpdateController = new FeedsUpdateController();
+
 export {
   feedCreateHandler,
   feedMapper,
   feedsCreateController,
   feedsFindController,
+  feedsUpdateController,
 };
