@@ -1,5 +1,4 @@
-import { Request, Response } from 'express';
-import httpStatus from 'http-status';
+import { Request } from 'express';
 
 import { TUuid } from '../../../shared/domain/types';
 import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
@@ -19,17 +18,13 @@ export class FeedsFindController extends BaseController {
     };
   }
 
-  async run(req: Request, res: Response): Promise<void> {
+  async run(req: Request): Promise<object> {
     const uuid = req.params.uuid as TUuid;
 
     const entity = await this.finder.execute(uuid);
 
     const resource = new FeedResource(entity);
 
-    res
-      .json({
-        data: resource.response(),
-      })
-      .status(httpStatus.OK);
+    return resource.response();
   }
 }

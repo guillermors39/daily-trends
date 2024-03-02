@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 
 import { NotFoundException } from '../../application/exceptions';
 import { TSchemasConfig } from '../contracts';
@@ -6,7 +7,7 @@ import { NotFoundError } from '../errors/not-found.error';
 import { validateRequest } from '../helpers/request';
 
 export abstract class BaseController {
-  abstract run(req: Request, res: Response): Promise<void>;
+  abstract run(req: Request): Promise<object | void>;
 
   protected schema(): TSchemasConfig {
     return {};
@@ -20,7 +21,12 @@ export abstract class BaseController {
     try {
       await validateRequest(this.schema(), req);
 
-      await this.run(req, res);
+      const data = await this.run(req);
+
+      const statusCode =
+        typeof data === 'object' ? httpStatus.OK : httpStatus.NO_CONTENT;
+
+      res.status(statusCode).json({ data });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // TODO: make a error factory
