@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import Joi from 'joi';
 
 import { TUuid } from '../../../shared/domain/types';
 import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
 import { BaseController } from '../../../shared/infrastructure/controllers';
 import { FeedFindHandler } from '../../application/handlers';
 import { FeedResource } from '../resources/feed.resource';
+import { params } from '../validations';
 
 export class FeedsFindController extends BaseController {
   constructor(private readonly finder: FeedFindHandler) {
@@ -15,9 +15,7 @@ export class FeedsFindController extends BaseController {
 
   schema(): TSchemasConfig {
     return {
-      params: Joi.object({
-        uuid: Joi.string().uuid().required(),
-      }),
+      params: params(),
     };
   }
 
