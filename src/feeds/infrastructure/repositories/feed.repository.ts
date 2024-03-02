@@ -3,13 +3,14 @@ import { IMapper } from '../../../shared/infrastructure/contracts';
 import {
   IFeedCreateRepository,
   IFeedFindRepository,
+  IFeedUpdateRepository,
 } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedDto } from '../../domain/types';
 import { IFeedModel } from '../models';
 
 export class FeedRepository
-  implements IFeedCreateRepository, IFeedFindRepository
+  implements IFeedCreateRepository, IFeedFindRepository, IFeedUpdateRepository
 {
   constructor(
     private readonly model: IFeedModel,
@@ -17,7 +18,7 @@ export class FeedRepository
   ) {}
 
   async create(feed: FeedEntity): Promise<void> {
-    const dto = this.mapper.fromEntityToInfraDto(feed);
+    const dto = this.mapper.fromEntityToDto(feed);
 
     await this.model.create(dto);
   }
@@ -30,5 +31,22 @@ export class FeedRepository
     const dto = this.mapper.fromInfraToDto(model);
 
     return FeedEntity.fromDto(dto);
+  }
+
+  async update(feed: FeedEntity): Promise<void> {
+    const { uuid, ...dto } = this.mapper.fromEntityToDto(feed);
+
+    const { title, subtitle, body, location, authors } = dto;
+
+    await this.model.updateOne(
+      { uuid },
+      {
+        title,
+        subtitle,
+        body,
+        location,
+        authors,
+      },
+    );
   }
 }
