@@ -23,6 +23,7 @@ export abstract class BaseController {
       await this.run(req, res);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      // TODO: make a error factory
       if (error instanceof NotFoundException) {
         return next(new NotFoundError(error.message));
       }
