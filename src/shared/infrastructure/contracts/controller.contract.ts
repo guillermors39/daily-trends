@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { ObjectSchema } from 'joi';
 
 export enum ERequestValue {
@@ -9,8 +8,3 @@ export enum ERequestValue {
 }
 
 export type TSchemasConfig = Partial<Record<ERequestValue, ObjectSchema>>;
-
-export interface IController {
-  execute(req: Request, res: Response): Promise<void>;
-  schema?(): TSchemasConfig;
-}

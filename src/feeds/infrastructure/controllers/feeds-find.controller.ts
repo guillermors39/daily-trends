@@ -3,15 +3,15 @@ import httpStatus from 'http-status';
 import Joi from 'joi';
 
 import { TUuid } from '../../../shared/domain/types';
-import {
-  IController,
-  TSchemasConfig,
-} from '../../../shared/infrastructure/contracts';
+import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
+import { BaseController } from '../../../shared/infrastructure/controllers';
 import { FeedFindHandler } from '../../application/handlers';
 import { FeedResource } from '../resources/feed.resource';
 
-export class FeedsFindController implements IController {
-  constructor(private readonly finder: FeedFindHandler) {}
+export class FeedsFindController extends BaseController {
+  constructor(private readonly finder: FeedFindHandler) {
+    super();
+  }
 
   schema(): TSchemasConfig {
     return {
@@ -21,7 +21,7 @@ export class FeedsFindController implements IController {
     };
   }
 
-  async execute(req: Request, res: Response): Promise<void> {
+  async run(req: Request, res: Response): Promise<void> {
     const uuid = req.params.uuid as TUuid;
 
     const entity = await this.finder.execute(uuid);

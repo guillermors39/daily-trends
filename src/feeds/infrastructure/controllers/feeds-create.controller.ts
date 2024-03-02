@@ -2,16 +2,16 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import Joi from 'joi';
 
-import {
-  IController,
-  TSchemasConfig,
-} from '../../../shared/infrastructure/contracts';
+import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
+import { BaseController } from '../../../shared/infrastructure/controllers';
 import { FeedCreateHandler } from '../../application/handlers';
 import { TFeedCreate } from '../../domain/types';
 import { FeedResource } from '../resources/feed.resource';
 
-export class FeedsCreateController implements IController {
-  constructor(private readonly creator: FeedCreateHandler) {}
+export class FeedsCreateController extends BaseController {
+  constructor(private readonly creator: FeedCreateHandler) {
+    super();
+  }
 
   schema(): TSchemasConfig {
     return {
@@ -26,7 +26,7 @@ export class FeedsCreateController implements IController {
     };
   }
 
-  async execute(req: Request, res: Response): Promise<void> {
+  async run(req: Request, res: Response): Promise<void> {
     const body = req.body as TFeedCreate;
 
     const entity = await this.creator.execute(body);
