@@ -17,11 +17,7 @@ export class FeedCreateHandler implements IHandler<TFeedCreate, FeedEntity> {
 
     const entity = FeedEntity.create(uuid, dto);
 
-    try {
-      await this.repository.create(entity);
-    } catch (error) {
-      // TODO: either pattern
-    }
+    await this.repository.create(entity);
 
     return entity;
   }
