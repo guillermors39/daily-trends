@@ -16,16 +16,48 @@ class Source {
 
 export class FeedEntity extends AggregateEntity {
   constructor(
-    public readonly uuid: TUuid,
-    public readonly title: string,
-    public readonly subtitle: string,
-    public readonly body: string,
-    public readonly location: string,
-    public readonly authors: string[],
-    public readonly source: Source,
-    public readonly date: Date,
+    private _uuid: TUuid,
+    private _title: string,
+    private _subtitle: string,
+    private _body: string,
+    private _location: string,
+    private _authors: string[],
+    private _source: Source,
+    private _date: Date,
   ) {
     super();
+  }
+
+  get uuid(): TUuid {
+    return this._uuid;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get subtitle(): string {
+    return this._subtitle;
+  }
+
+  get body(): string {
+    return this._body;
+  }
+
+  get location(): string {
+    return this._location;
+  }
+
+  get authors(): string[] {
+    return this._authors;
+  }
+
+  get source(): Source {
+    return this._source;
+  }
+
+  get date(): Date {
+    return this._date;
   }
 
   static create(uuid: TUuid, dto: TFeedCreate): FeedEntity {
@@ -47,5 +79,13 @@ export class FeedEntity extends AggregateEntity {
 
   static fromDto(dto: TFeedDto): FeedEntity {
     return this.create(dto.uuid, dto);
+  }
+
+  update({ title, subtitle, body, location, authors }: TFeedCreate): void {
+    this._title = title;
+    this._subtitle = subtitle;
+    this._body = body;
+    this._authors = authors;
+    this._location = location;
   }
 }
