@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 
 import { TConfig } from './configs';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
-import { MongooseConnectorService } from './services';
+import { MongooseConnectorService } from './services/mongoose.service';
 import { TRoute } from './types';
 
 export class App {
