@@ -12,3 +12,7 @@ export interface IFeedFindRepository {
 export interface IFeedUpdateRepository {
   update(feed: FeedEntity): Promise<void>;
 }
+
+export interface IFeedDeleteRepository {
+  delete(uuid: TUuid): Promise<void>;
+}

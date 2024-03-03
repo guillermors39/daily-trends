@@ -2,6 +2,7 @@ import { TUuid } from '../../../shared/domain/types';
 import { IMapper } from '../../../shared/infrastructure/contracts';
 import {
   IFeedCreateRepository,
+  IFeedDeleteRepository,
   IFeedFindRepository,
   IFeedUpdateRepository,
 } from '../../domain/contracts';
@@ -10,7 +11,11 @@ import { TFeedDto } from '../../domain/types';
 import { IFeedModel } from '../models';
 
 export class FeedRepository
-  implements IFeedCreateRepository, IFeedFindRepository, IFeedUpdateRepository
+  implements
+    IFeedCreateRepository,
+    IFeedFindRepository,
+    IFeedUpdateRepository,
+    IFeedDeleteRepository
 {
   constructor(
     private readonly model: IFeedModel,
@@ -48,5 +53,9 @@ export class FeedRepository
         authors,
       },
     );
+  }
+
+  async delete(uuid: TUuid): Promise<void> {
+    await this.model.deleteOne({ uuid });
   }
 }
