@@ -9,6 +9,7 @@ import {
   FeedsCreateController,
   FeedsDeleteController,
   FeedsFindController,
+  FeedsSearchController,
   FeedsUpdateController,
 } from '../controllers';
 import { FeedMapper } from '../mappers/feed.mapper';
@@ -39,6 +40,8 @@ const feedsDeleteController = new FeedsDeleteController(feedDeleteHandler);
 
 const feedsFindController = new FeedsFindController(feedFindHandler);
 
+const feedsSearchController = new FeedsSearchController();
+
 const feedsUpdateController = new FeedsUpdateController(feedsUpdateHandler);
 
 export {
@@ -46,5 +49,6 @@ export {
   feedsCreateController,
   feedsDeleteController,
   feedsFindController,
+  feedsSearchController,
   feedsUpdateController,
 };

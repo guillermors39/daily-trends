@@ -5,10 +5,13 @@ import {
   feedsCreateController,
   feedsDeleteController,
   feedsFindController,
+  feedsSearchController,
   feedsUpdateController,
 } from '../providers';
 
 const feedRouter = express.Router();
+
+feedRouter.get('/', feedsSearchController.execute.bind(feedsSearchController));
 
 feedRouter.post('/', feedsCreateController.execute.bind(feedsCreateController));
 
