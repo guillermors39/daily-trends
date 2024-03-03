@@ -2,7 +2,7 @@ import { IHandler } from '../../../shared/domain/contracts/app.contract';
 import { TUuid } from '../../../shared/domain/types';
 import { IFeedFindRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
-import { FeedNotFoundException } from '../exceptions';
+import { FeedNotFoundException } from '../../domain/exceptions';
 
 export class FeedFindHandler implements IHandler<TUuid, FeedEntity> {
   constructor(private readonly repository: IFeedFindRepository) {}
