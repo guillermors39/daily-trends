@@ -1,4 +1,4 @@
-import { NotFoundException } from '../../../shared/application/exceptions';
+import { NotFoundException } from '../../../shared/domain/exceptions';
 
 export class FeedNotFoundException extends NotFoundException {
   constructor(id: string) {

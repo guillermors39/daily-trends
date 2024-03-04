@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-import { NotFoundException } from '../../application/exceptions';
+import { NotFoundException } from '../../domain/exceptions';
 import { TSchemasConfig } from '../contracts';
 import { NotFoundError } from '../errors/not-found.error';
 import { validateRequest } from '../helpers/request';
