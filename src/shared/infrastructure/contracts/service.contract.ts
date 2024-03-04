@@ -18,3 +18,8 @@ export interface IPaginatorService {
     params: TPaginationParams,
   ): Promise<PaginatedDto<T>>;
 }
+
+export interface IConnector {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+}
