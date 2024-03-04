@@ -1,31 +1,30 @@
-import { connect } from 'mongoose';
+import { connect, Mongoose } from 'mongoose';
 
 import { TConfigDb } from '../configs';
+import { IConnector } from '../contracts';
 
-export class MongooseConnectorService {
-  private static instance: MongooseConnectorService;
+const uri = ({ host, port, user, password }: TConfigDb): string => {
+  let userUri = '';
 
-  private constructor() {}
-
-  public static getInstance(): MongooseConnectorService {
-    if (!this.instance) {
-      this.instance = new this();
-    }
-
-    return this.instance;
+  if (!!user && !!password) {
+    userUri += `${user}:${password}@`;
   }
 
-  private uri({ host, port, user, password }: TConfigDb): string {
-    return `mongodb://${user}:${password}@${host}:${port}`;
+  return `mongodb://${userUri}${host}:${port}`;
+};
+
+export class MongooseConnectorService implements IConnector {
+  private client: Mongoose | undefined;
+
+  constructor(private readonly config: TConfigDb) {}
+
+  async connect(): Promise<void> {
+    this.client = await connect(uri(this.config), { dbName: this.config.name });
   }
 
-  async connect(config: TConfigDb): Promise<void> {
-    const { name: dbName } = config;
-
-    try {
-      await connect(this.uri(config), { dbName });
-    } catch (error) {
-      console.error(error);
+  async disconnect(): Promise<void> {
+    if (!!this.client) {
+      return this.client.disconnect();
     }
   }
 }
