@@ -11,13 +11,13 @@ export class FeedsDeleteController extends BaseController {
     super();
   }
 
-  schema(): TSchemasConfig {
+  protected schema(): TSchemasConfig {
     return {
       params: params(),
     };
   }
 
-  async run(req: Request): Promise<void> {
+  protected async run(req: Request): Promise<void> {
     const uuid = req.params.uuid as TUuid;
 
     await this.remover.execute(uuid);

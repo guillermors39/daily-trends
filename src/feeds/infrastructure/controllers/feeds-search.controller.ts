@@ -5,7 +5,7 @@ import { TSchemasConfig } from '../../../shared/infrastructure/contracts';
 import { BaseController } from '../../../shared/infrastructure/controllers';
 
 export class FeedsSearchController extends BaseController {
-  schema(): TSchemasConfig {
+  protected schema(): TSchemasConfig {
     return {
       query: Joi.object({
         page: Joi.number().integer().min(1),
@@ -14,11 +14,11 @@ export class FeedsSearchController extends BaseController {
     };
   }
 
-  async run(req: Request): Promise<object[]> {
-    const { page, per_page } = req.query;
+  protected async run(req: Request): Promise<object[]> {
+    const { page, per_page: perPage } = req.query;
 
-    console.log('🚀 ~ FeedsSearchController ~ run ~ per_page:', per_page);
     console.log('🚀 ~ FeedsSearchController ~ run ~ page:', page);
+    console.log('🚀 ~ FeedsSearchController ~ run ~ perPage:', perPage);
 
     return [];
   }

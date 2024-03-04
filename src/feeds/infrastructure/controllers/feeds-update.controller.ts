@@ -13,14 +13,14 @@ export class FeedsUpdateController extends BaseController {
     super();
   }
 
-  schema(): TSchemasConfig {
+  protected schema(): TSchemasConfig {
     return {
       body: body(),
       params: params(),
     };
   }
 
-  async run(req: Request): Promise<object> {
+  protected async run(req: Request): Promise<object> {
     const body = req.body as TFeedCreate;
     const uuid = req.params.uuid as TUuid;
 
