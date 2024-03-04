@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { HydratedDocument, Model } from 'mongoose';
 
 import { TPagination } from '../../domain/contracts/app.contract';
 import { PaginatedDto } from '../../domain/dtos/paginated.dto';
@@ -8,7 +8,7 @@ export class PaginatorService implements IPaginatorService {
   async paginate<T>(
     model: Model<T>,
     params: TPaginationParams,
-  ): Promise<PaginatedDto<T>> {
+  ): Promise<PaginatedDto<HydratedDocument<T>>> {
     const { page, perPage, filters = {}, sort = {} } = params;
 
     const skip = (page - 1) * perPage;

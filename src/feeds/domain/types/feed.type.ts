@@ -14,6 +14,11 @@ export type TFeedUpdate = TFeedCreate & {
   readonly uuid: TUuid;
 };
 
+export type TFeedSearch = {
+  page?: number;
+  perPage?: number;
+};
+
 export type TSource = {
   readonly code: ESourceCode;
   readonly url: string;

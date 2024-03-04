@@ -1,6 +1,6 @@
 import { TPagination } from '../contracts/app.contract';
 
-export class PaginatedDto<T> {
+export class PaginatedDto<T extends object = object> {
   constructor(
     private readonly _items: T[],
     private readonly _pagination: TPagination,

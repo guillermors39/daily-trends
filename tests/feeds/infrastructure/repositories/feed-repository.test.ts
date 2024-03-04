@@ -2,6 +2,7 @@ import { IFeedCreateRepository } from '../../../../src/feeds/domain/contracts';
 import { FeedModel } from '../../../../src/feeds/infrastructure/models';
 import { feedMapper } from '../../../../src/feeds/infrastructure/providers';
 import { FeedRepository } from '../../../../src/feeds/infrastructure/repositories/feed.repository';
+import { paginatorService } from '../../../../src/shared/infrastructure/providers/app.providers';
 import { FeedEntityMother } from '../../domain/mothers/entity.mother';
 
 jest
@@ -13,7 +14,8 @@ describe('FeedRepository Test', () => {
   let repository: IFeedCreateRepository;
 
   beforeEach(() => {
-    repository = new FeedRepository(FeedModel, feedMapper);
+    // TODO: mock implamentations
+    repository = new FeedRepository(FeedModel, feedMapper, paginatorService);
   });
 
   afterEach(() => {

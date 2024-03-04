@@ -20,19 +20,27 @@ export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
     };
   }
 
-  fromInfraToDto(model: TFeedModelInstance): TFeedDto {
-    const { uuid, title, subtitle, authors, body, location, date, source } =
-      model.toObject();
+  fromInfraToDto(model: TFeedModelInstance): TFeedDto;
+  fromInfraToDto(model: TFeedModelInstance[]): TFeedDto[];
+  fromInfraToDto(
+    model: TFeedModelInstance | TFeedModelInstance[],
+  ): TFeedDto | TFeedDto[] {
+    const mapItem = (model: TFeedModelInstance) => {
+      const { uuid, title, subtitle, authors, body, location, date, source } =
+        model.toObject();
 
-    return {
-      uuid,
-      title,
-      subtitle,
-      authors,
-      body,
-      location,
-      date,
-      source,
+      return {
+        uuid,
+        title,
+        subtitle,
+        authors,
+        body,
+        location,
+        date,
+        source,
+      };
     };
+
+    return Array.isArray(model) ? model.map(mapItem) : mapItem(model);
   }
 }

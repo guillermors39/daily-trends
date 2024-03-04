@@ -1,4 +1,6 @@
+import { PaginatedDto } from '../../../shared/domain/dtos/paginated.dto';
 import { TUuid } from '../../../shared/domain/types';
+import { TPaginationParams } from '../../../shared/infrastructure/contracts';
 import { FeedEntity } from '../entities';
 
 export interface IFeedCreateRepository {
@@ -15,4 +17,8 @@ export interface IFeedUpdateRepository {
 
 export interface IFeedDeleteRepository {
   delete(uuid: TUuid): Promise<void>;
+}
+
+export interface IFeedSearchRepository {
+  search(params: TPaginationParams): Promise<PaginatedDto<FeedEntity>>;
 }
