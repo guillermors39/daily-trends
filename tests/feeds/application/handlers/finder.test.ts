@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
-import { FeedNotFoundException } from '../../../../src/feeds/domain/exceptions';
 import { FeedFindHandler } from '../../../../src/feeds/application/handlers';
 import { IFeedFindRepository } from '../../../../src/feeds/domain/contracts';
+import { FeedNotFoundException } from '../../../../src/feeds/domain/exceptions';
 import { TUuid } from '../../../../src/shared/domain/types';
 import { FeedEntityMother } from '../../domain/mothers/entity.mother';
 
