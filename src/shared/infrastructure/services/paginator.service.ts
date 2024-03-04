@@ -1,21 +1,10 @@
 import { Model } from 'mongoose';
 
-import {
-  TPagination,
-  TPaginationSearch,
-} from '../../domain/contracts/app.contract';
+import { TPagination } from '../../domain/contracts/app.contract';
 import { PaginatedDto } from '../../domain/dtos/paginated.dto';
+import { IPaginatorService, TPaginationParams } from '../contracts';
 
-type TSort = {
-  [key: string]: 1 | -1;
-};
-
-type TPaginationParams = TPaginationSearch & {
-  filters?: object;
-  sort?: TSort;
-};
-
-export class PaginatorService {
+export class PaginatorService implements IPaginatorService {
   async paginate<T>(
     model: Model<T>,
     params: TPaginationParams,
