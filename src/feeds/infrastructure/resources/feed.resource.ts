@@ -1,4 +1,8 @@
-import { BaseJsonResource } from '../../../shared/infrastructure/resources';
+import { PaginatedDto } from '../../../shared/domain/dtos/paginated.dto';
+import {
+  BaseJsonResource,
+  BasePaginatedResource,
+} from '../../../shared/infrastructure/resources';
 import { FeedEntity } from '../../domain/entities';
 
 export class FeedResource extends BaseJsonResource {
@@ -15,5 +19,15 @@ export class FeedResource extends BaseJsonResource {
       source: this.entity.source,
       date: this.entity.date.toISOString(),
     };
+  }
+}
+
+export class FeedPaginatedResource extends BasePaginatedResource {
+  constructor(paginated: PaginatedDto<FeedEntity>) {
+    super(paginated);
+  }
+
+  protected mapItem(item: FeedEntity): object {
+    return new FeedResource(item).response();
   }
 }

@@ -12,13 +12,13 @@ export class FeedsCreateController extends BaseController {
     super();
   }
 
-  schema(): TSchemasConfig {
+  protected schema(): TSchemasConfig {
     return {
       body: body(),
     };
   }
 
-  async run(req: Request): Promise<object> {
+  protected async run(req: Request): Promise<object> {
     const body = req.body as TFeedCreate;
 
     const entity = await this.creator.execute(body);

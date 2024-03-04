@@ -7,7 +7,7 @@ import { NotFoundError } from '../errors/not-found.error';
 import { validateRequest } from '../helpers/request';
 
 export abstract class BaseController {
-  abstract run(req: Request): Promise<object | void>;
+  protected abstract run(req: Request): Promise<object | void>;
 
   protected schema(): TSchemasConfig {
     return {};

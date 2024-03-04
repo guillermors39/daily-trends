@@ -12,13 +12,13 @@ export class FeedsFindController extends BaseController {
     super();
   }
 
-  schema(): TSchemasConfig {
+  protected schema(): TSchemasConfig {
     return {
       params: params(),
     };
   }
 
-  async run(req: Request): Promise<object> {
+  protected async run(req: Request): Promise<object> {
     const uuid = req.params.uuid as TUuid;
 
     const entity = await this.finder.execute(uuid);

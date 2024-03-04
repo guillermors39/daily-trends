@@ -1,5 +1,5 @@
-import { FeedNotFoundException } from '../../../../src/feeds/domain/exceptions';
 import { FeedDeleteHandler } from '../../../../src/feeds/application/handlers';
+import { FeedNotFoundException } from '../../../../src/feeds/domain/exceptions';
 import { TUuid } from '../../../../src/shared/domain/types';
 import { FeedEntityMother } from '../../domain/mothers/entity.mother';
 

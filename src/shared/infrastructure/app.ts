@@ -1,8 +1,8 @@
 import express, { Express } from 'express';
 
 import { TConfig } from './configs';
+import { IConnector } from './contracts';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
-import { MongooseConnectorService } from './services/mongoose.service';
 import { TRoute } from './types';
 
 export class App {
@@ -10,6 +10,7 @@ export class App {
   private readonly express: Express;
 
   private routes: TRoute[] = [];
+  private connectors: IConnector[] = [];
 
   constructor(private readonly config: TConfig) {
     this.port = this.config.server.port;
@@ -21,7 +22,7 @@ export class App {
 
     this.setRoutes();
 
-    await this.database();
+    await this.connections();
 
     this.setErrorHandler();
 
@@ -34,8 +35,14 @@ export class App {
     this.routes.push(...routes);
   }
 
-  private async database() {
-    await MongooseConnectorService.getInstance().connect(this.config.database);
+  addConnector(...connectors: IConnector[]) {
+    this.connectors.push(...connectors);
+  }
+
+  private async connections() {
+    const promises = this.connectors.map((item: IConnector) => item.connect());
+
+    await Promise.all(promises);
   }
 
   private setMiddlewares() {

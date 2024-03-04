@@ -18,4 +18,11 @@ export const config = {
 };
 
 export type TConfig = typeof config;
-export type TConfigDb = TConfig['database'];
+
+export type TConfigDb = {
+  readonly host: string;
+  readonly port: number;
+  readonly user?: string;
+  readonly password?: string;
+  readonly name?: string;
+};
