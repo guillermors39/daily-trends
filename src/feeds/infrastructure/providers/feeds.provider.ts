@@ -1,8 +1,12 @@
-import { uuidGenerator } from '../../../shared/infrastructure/providers/app.providers';
+import {
+  paginatorService,
+  uuidGenerator,
+} from '../../../shared/infrastructure/providers/app.providers';
 import {
   FeedCreateHandler,
   FeedDeleteHandler,
   FeedFindHandler,
+  FeedSearchHandler,
   FeedUpdateHandler,
 } from '../../application/handlers';
 import {
@@ -18,7 +22,13 @@ import { FeedRepository } from '../repositories/feed.repository';
 
 const feedMapper = new FeedMapper();
 
-const feedRepository = new FeedRepository(FeedModel, feedMapper);
+const feedRepository = new FeedRepository(
+  FeedModel,
+  feedMapper,
+  paginatorService,
+);
+
+const feedSearchHandler = new FeedSearchHandler(feedRepository);
 
 const feedCreateHandler = new FeedCreateHandler(uuidGenerator, feedRepository);
 
@@ -40,7 +50,7 @@ const feedsDeleteController = new FeedsDeleteController(feedDeleteHandler);
 
 const feedsFindController = new FeedsFindController(feedFindHandler);
 
-const feedsSearchController = new FeedsSearchController();
+const feedsSearchController = new FeedsSearchController(feedSearchHandler);
 
 const feedsUpdateController = new FeedsUpdateController(feedsUpdateHandler);
 
