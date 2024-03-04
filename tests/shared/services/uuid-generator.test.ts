@@ -1,5 +1,5 @@
-import { IUuidGenerator } from '../../../../src/shared/domain/contracts/app.contract';
-import { UuidGenerator } from '../../../../src/shared/infrastructure/services/uuid.service';
+import { IUuidGenerator } from '../../../src/shared/domain/contracts/app.contract';
+import { UuidGenerator } from '../../../src/shared/infrastructure/services/uuid.service';
 
 describe('UuidGenerator Test', () => {
   let generator: IUuidGenerator;
