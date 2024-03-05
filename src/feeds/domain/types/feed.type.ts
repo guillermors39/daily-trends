@@ -10,6 +10,10 @@ export type TFeedCreate = {
   readonly date: Date;
 };
 
+export type TFeedCreateFromSource = TFeedCreate & {
+  source: TSource;
+};
+
 export type TFeedUpdate = TFeedCreate & {
   readonly uuid: TUuid;
 };
