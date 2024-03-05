@@ -2,9 +2,9 @@ import { Page } from 'puppeteer';
 
 import { ESourceCode } from '../../../domain/enums';
 import { TFeedCreateFromSource } from '../../../domain/types';
-import { FeedScrappingService, TScriptFunc } from '../feed-scrapping.service';
+import { FeedScrapingService, TScriptFunc } from '../feed-scraping.service';
 
-export class ElMundoScrappingService extends FeedScrappingService {
+export class ElMundoScrapingService extends FeedScrapingService {
   protected source(): ESourceCode {
     return ESourceCode.elMundo;
   }

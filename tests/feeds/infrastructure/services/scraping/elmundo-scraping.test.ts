@@ -1,17 +1,17 @@
 import { FeedEntity } from '../../../../../src/feeds/domain/entities';
 import { ESourceCode } from '../../../../../src/feeds/domain/enums';
-import { ElMundoScrappingService } from '../../../../../src/feeds/infrastructure/services/scrapping/elmundo.service';
+import { ElMundoScrapingService } from '../../../../../src/feeds/infrastructure/services/scraping/elmundo.service';
 import { TUuid } from '../../../../../src/shared/domain/types';
 
-describe('ElMundoScrappingService Test', () => {
-  let webScrapping: ElMundoScrappingService;
+describe('ElMundoScrapingService Test', () => {
+  let webScraping: ElMundoScrapingService;
 
   const uuidGenerator = {
     execute: jest.fn((): TUuid => 'test-test-test-test-test'),
   };
 
   beforeEach(() => {
-    webScrapping = new ElMundoScrappingService(uuidGenerator);
+    webScraping = new ElMundoScrapingService(uuidGenerator);
   });
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('ElMundoScrappingService Test', () => {
   });
 
   it.only('should return feed entities', async () => {
-    const result = await webScrapping.execute();
+    const result = await webScraping.execute();
 
     expect(Array.isArray(result)).toBe(true);
 

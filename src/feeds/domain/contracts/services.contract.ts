@@ -1,7 +1,7 @@
 import { TPaginationSearch } from '../../../shared/domain/contracts/app.contract';
 import { FeedEntity } from '../entities';
 
-export interface IFeedScrapping {
+export interface IFeedScraping {
   execute(): Promise<FeedEntity[]>;
 }
 

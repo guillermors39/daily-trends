@@ -1,6 +1,6 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 
-export abstract class WebScrappingService {
+export abstract class WebScrapingService {
   protected _browser: Browser | undefined;
 
   protected async browser(): Promise<Browser> {

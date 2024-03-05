@@ -1,8 +1,8 @@
 import { Page } from 'puppeteer';
 
 import { IUuidGenerator } from '../../../shared/domain/contracts/app.contract';
-import { WebScrappingService } from '../../../shared/infrastructure/services/web-scraping.service';
-import { IFeedScrapping } from '../../domain/contracts';
+import { WebScrapingService } from '../../../shared/infrastructure/services/web-scraping.service';
+import { IFeedScraping } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { ESourceCode } from '../../domain/enums';
 import { TFeedCreateFromSource } from '../../domain/types';
@@ -12,9 +12,9 @@ export type TScriptFunc = (
   code: ESourceCode,
 ) => TFeedCreateFromSource[];
 
-export abstract class FeedScrappingService
-  extends WebScrappingService
-  implements IFeedScrapping
+export abstract class FeedScrapingService
+  extends WebScrapingService
+  implements IFeedScraping
 {
   constructor(private readonly uuidGenerator: IUuidGenerator) {
     super();
