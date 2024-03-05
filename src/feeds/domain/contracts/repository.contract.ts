@@ -4,7 +4,7 @@ import { FeedEntity } from '../entities';
 import { TPaginationParams } from './services.contract';
 
 export interface IFeedCreateRepository {
-  create(feed: FeedEntity): Promise<void>;
+  create(...feed: FeedEntity[]): Promise<void>;
 }
 
 export interface IFeedFindRepository {

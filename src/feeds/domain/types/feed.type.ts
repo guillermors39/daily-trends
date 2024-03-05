@@ -38,3 +38,8 @@ export type TFeedDto = {
   readonly source: TSource;
   readonly date: Date;
 };
+
+export type TTrendsFilter = {
+  readonly sources?: ESourceCode[];
+  readonly limit?: number;
+};

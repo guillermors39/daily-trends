@@ -1,5 +1,7 @@
 import { config as configDotEnv } from 'dotenv';
 
+import { ESourceCode } from '../../../feeds/domain/enums';
+
 configDotEnv();
 
 export const config = {
@@ -25,4 +27,16 @@ export type TConfigDb = {
   readonly user?: string;
   readonly password?: string;
   readonly name?: string;
+};
+
+type TNewsPortalConfig = Partial<Record<ESourceCode, string>>;
+
+export type TScrapingConfig = {
+  readonly limit: number;
+  readonly portals: TNewsPortalConfig;
+};
+
+export const portals: TNewsPortalConfig = {
+  [ESourceCode.elMundo]: 'https://www.elmundo.es/',
+  [ESourceCode.elPais]: 'https://elpais.com/',
 };
