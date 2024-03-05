@@ -1,7 +1,7 @@
 import { PaginatedDto } from '../../../shared/domain/dtos/paginated.dto';
 import { TUuid } from '../../../shared/domain/types';
-import { TPaginationParams } from '../../../shared/infrastructure/contracts';
 import { FeedEntity } from '../entities';
+import { TPaginationParams } from './services.contract';
 
 export interface IFeedCreateRepository {
   create(feed: FeedEntity): Promise<void>;

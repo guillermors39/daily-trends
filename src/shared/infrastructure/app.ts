@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 
-import { TConfig } from './configs';
+import { TConfig } from './configs/config';
 import { IConnector } from './contracts';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 import { TRoute } from './types';

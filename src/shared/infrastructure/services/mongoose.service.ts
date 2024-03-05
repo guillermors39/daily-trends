@@ -1,6 +1,6 @@
 import { connect, Mongoose } from 'mongoose';
 
-import { TConfigDb } from '../configs';
+import { TConfigDb } from '../configs/config';
 import { IConnector } from '../contracts';
 
 const uri = ({ host, port, user, password }: TConfigDb): string => {

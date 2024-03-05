@@ -1,8 +1,9 @@
 import { HydratedDocument, Model } from 'mongoose';
 
+import { TPaginationParams } from '../../../feeds/domain/contracts';
 import { TPagination } from '../../domain/contracts/app.contract';
 import { PaginatedDto } from '../../domain/dtos/paginated.dto';
-import { IPaginatorService, TPaginationParams } from '../contracts';
+import { IPaginatorService } from '../contracts';
 
 export class PaginatorService implements IPaginatorService {
   async paginate<T>(
