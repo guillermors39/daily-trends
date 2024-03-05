@@ -6,28 +6,10 @@ import { FeedEntity } from '../../domain/entities';
 import { ESourceCode } from '../../domain/enums';
 import { TFeedCreateFromSource } from '../../domain/types';
 
-export const dtoFactory = (
+export type TScriptFunc = (
   date: Date,
-  title: string,
-  body: string,
-  authors: string[],
-  location: string,
-  url: string,
   code: ESourceCode,
-): TFeedCreateFromSource => ({
-  title,
-  subtitle: '',
-  body,
-  authors,
-  location,
-  date,
-  source: {
-    code,
-    url,
-  },
-});
-
-export type TSourceDtoFactory = typeof dtoFactory;
+) => TFeedCreateFromSource[];
 
 export abstract class FeedScrappingService extends WebScrappingService {
   constructor(private readonly uuidGenerator: IUuidGenerator) {
@@ -38,12 +20,16 @@ export abstract class FeedScrappingService extends WebScrappingService {
 
   protected abstract url(): string;
 
-  protected abstract feeds(page: Page): Promise<TFeedCreateFromSource[]>;
+  protected abstract script(): TScriptFunc;
+
+  protected abstract before(page: Page): Promise<void>;
 
   async execute(): Promise<FeedEntity[]> {
     const page = await this.navigateToPage(this.url());
 
-    const feeds = await this.feeds(page);
+    await this.before(page);
+
+    const feeds = await page.evaluate(this.script(), new Date(), this.source());
 
     await this.close();
 

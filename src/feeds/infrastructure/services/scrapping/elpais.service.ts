@@ -2,7 +2,7 @@ import { Page } from 'puppeteer';
 
 import { ESourceCode } from '../../../domain/enums';
 import { TFeedCreateFromSource } from '../../../domain/types';
-import { FeedScrappingService } from '../feed-scrapping.service';
+import { FeedScrappingService, TScriptFunc } from '../feed-scrapping.service';
 
 export class ElPaisScrappingService extends FeedScrappingService {
   protected source(): ESourceCode {
@@ -13,20 +13,22 @@ export class ElPaisScrappingService extends FeedScrappingService {
     return 'https://elpais.com/';
   }
 
-  protected async feeds(page: Page): Promise<TFeedCreateFromSource[]> {
-    await page.waitForSelector('#pmConsentWall', { timeout: 10000 });
+  protected async before(page: Page): Promise<void> {
+    try {
+      await page.waitForSelector('#pmConsentWall', { timeout: 5000 });
 
-    await page.click('.pmConsentWall-button');
+      await page.click('.pmConsentWall-button');
+    } catch (error) {}
+  }
 
+  protected script(): TScriptFunc {
     /* istanbul ignore next */
-    const feeds = await page.evaluate((): TFeedCreateFromSource[] => {
+    return (date, code): TFeedCreateFromSource[] => {
       const section = document.querySelector(
         'section[data-dtm-region="portada_apertura"]',
       );
 
-      if (!section) {
-        return [];
-      }
+      if (!section) return [];
 
       const feedArticles = Array.from(section.children).reduce(
         (carry: Element[], child) => {
@@ -41,21 +43,26 @@ export class ElPaisScrappingService extends FeedScrappingService {
         [],
       );
 
-      const date = new Date();
-
       return feedArticles.map((article): TFeedCreateFromSource => {
-        const titleLink = article.querySelector<HTMLElement>(
+        const titleLink = article.querySelector<HTMLAnchorElement>(
           'header h2 a',
-        ) as HTMLElement;
-        const url = titleLink.getAttribute('href') as string;
+        ) as HTMLAnchorElement;
+
+        const url = titleLink.href;
         const title = titleLink.innerText;
 
         const body =
           article.querySelector<HTMLElement>('div p')?.innerText ?? '';
 
-        const authors: string[] = [];
+        const subline = article.querySelector('.c_a');
 
-        const location = '';
+        const authors = !!subline
+          ? Array.from(subline.querySelectorAll('a')).map((a) => a.innerHTML)
+          : [];
+
+        const location = !!subline
+          ? subline.querySelector<HTMLElement>('span.c_a_l')?.innerText ?? ''
+          : '';
 
         return {
           date,
@@ -66,12 +73,10 @@ export class ElPaisScrappingService extends FeedScrappingService {
           location,
           source: {
             url,
-            code: ESourceCode.elPais,
+            code,
           },
         };
       });
-    });
-
-    return feeds;
+    };
   }
 }

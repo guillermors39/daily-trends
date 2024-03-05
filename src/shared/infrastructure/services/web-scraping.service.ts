@@ -14,10 +14,14 @@ export abstract class WebScrappingService {
     return this._browser;
   }
 
-  protected async navigateToPage(url: string): Promise<Page> {
+  protected async page(): Promise<Page> {
     const browser = await this.browser();
 
-    const page = await browser.newPage();
+    return browser.newPage();
+  }
+
+  protected async navigateToPage(url: string): Promise<Page> {
+    const page = await this.page();
 
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 

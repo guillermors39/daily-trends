@@ -1,17 +1,19 @@
 import { FeedEntity } from '../../../../../src/feeds/domain/entities';
 import { ESourceCode } from '../../../../../src/feeds/domain/enums';
-import { ElPaisScrappingService } from '../../../../../src/feeds/infrastructure/services/scrapping/elpais.service';
+import { ElMundoScrappingService } from '../../../../../src/feeds/infrastructure/services/scrapping/elmundo.service';
 import { TUuid } from '../../../../../src/shared/domain/types';
 
-describe('ElPaisScrappingService Test', () => {
-  let webScrapping: ElPaisScrappingService;
+jest.setTimeout(15000);
+
+describe('ElMundoScrappingService Test', () => {
+  let webScrapping: ElMundoScrappingService;
 
   const uuidGenerator = {
     execute: jest.fn((): TUuid => 'test-test-test-test-test'),
   };
 
   beforeEach(() => {
-    webScrapping = new ElPaisScrappingService(uuidGenerator);
+    webScrapping = new ElMundoScrappingService(uuidGenerator);
   });
 
   afterEach(() => {
@@ -28,7 +30,7 @@ describe('ElPaisScrappingService Test', () => {
     result.forEach((item) => {
       expect(item).toBeInstanceOf(FeedEntity);
 
-      expect(item.source.code).toBe(ESourceCode.elPais);
+      expect(item.source.code).toBe(ESourceCode.elMundo);
     });
   });
 });
