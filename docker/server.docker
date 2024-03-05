@@ -17,7 +17,7 @@ RUN apt-get update \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g typescript pupperteer
+RUN npm install -g typescript
 
 COPY ./entrypoints/server.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
