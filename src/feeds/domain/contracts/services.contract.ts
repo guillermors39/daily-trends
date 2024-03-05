@@ -2,7 +2,7 @@ import { TPaginationSearch } from '../../../shared/domain/contracts/app.contract
 import { FeedEntity } from '../entities';
 
 export interface IFeedScraping {
-  execute(): Promise<FeedEntity[]>;
+  execute(limit?: number): Promise<FeedEntity[]>;
 }
 
 export type TSort = {

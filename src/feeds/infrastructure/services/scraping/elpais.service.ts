@@ -1,16 +1,13 @@
 import { Page } from 'puppeteer';
 
+import { IUuidGenerator } from '../../../../shared/domain/contracts/app.contract';
 import { ESourceCode } from '../../../domain/enums';
 import { TFeedCreateFromSource } from '../../../domain/types';
 import { FeedScrapingService, TScriptFunc } from '../feed-scraping.service';
 
 export class ElPaisScrapingService extends FeedScrapingService {
-  protected source(): ESourceCode {
-    return ESourceCode.elPais;
-  }
-
-  protected url(): string {
-    return 'https://elpais.com/';
+  constructor(url: string, uuidGenerator: IUuidGenerator) {
+    super(ESourceCode.elPais, url, uuidGenerator);
   }
 
   protected async before(page: Page): Promise<void> {
@@ -23,14 +20,14 @@ export class ElPaisScrapingService extends FeedScrapingService {
 
   protected script(): TScriptFunc {
     /* istanbul ignore next */
-    return (date, code): TFeedCreateFromSource[] => {
+    return (date, code, limit): TFeedCreateFromSource[] => {
       const section = document.querySelector(
         'section[data-dtm-region="portada_apertura"]',
       );
 
       if (!section) return [];
 
-      const feedArticles = Array.from(section.children).reduce(
+      let feedArticles = Array.from(section.children).reduce(
         (carry: Element[], child) => {
           if (child.getAttribute('data-dtm-region') !== 'portada_opinion') {
             const articles = child.querySelectorAll('article');
@@ -42,6 +39,10 @@ export class ElPaisScrapingService extends FeedScrapingService {
         },
         [],
       );
+
+      if (feedArticles.length > limit) {
+        feedArticles = feedArticles.slice(0, limit);
+      }
 
       return feedArticles.map((article): TFeedCreateFromSource => {
         const titleLink = article.querySelector<HTMLAnchorElement>(

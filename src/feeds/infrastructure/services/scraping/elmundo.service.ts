@@ -1,16 +1,13 @@
 import { Page } from 'puppeteer';
 
+import { IUuidGenerator } from '../../../../shared/domain/contracts/app.contract';
 import { ESourceCode } from '../../../domain/enums';
 import { TFeedCreateFromSource } from '../../../domain/types';
 import { FeedScrapingService, TScriptFunc } from '../feed-scraping.service';
 
 export class ElMundoScrapingService extends FeedScrapingService {
-  protected source(): ESourceCode {
-    return ESourceCode.elMundo;
-  }
-
-  protected url(): string {
-    return 'https://www.elmundo.es/';
+  constructor(url: string, uuidGenerator: IUuidGenerator) {
+    super(ESourceCode.elMundo, url, uuidGenerator);
   }
 
   protected async before(page: Page): Promise<void> {
@@ -25,14 +22,18 @@ export class ElMundoScrapingService extends FeedScrapingService {
 
   protected script(): TScriptFunc {
     /* istanbul ignore next */
-    return (date: Date, code: ESourceCode): TFeedCreateFromSource[] => {
+    return (date, code, limit): TFeedCreateFromSource[] => {
       const baseClass = '.ue-c-cover-content__byline';
 
       const main = document.querySelector('div[data-b-type="headlines_a"]');
 
       if (!main) return [];
 
-      const feedArticles = Array.from(main.querySelectorAll('article'));
+      let feedArticles = Array.from(main.querySelectorAll('article'));
+
+      if (feedArticles.length > limit) {
+        feedArticles = feedArticles.slice(0, limit);
+      }
 
       return feedArticles.map((article): TFeedCreateFromSource => {
         const titleLink = article.querySelector('a') as HTMLAnchorElement;

@@ -10,36 +10,46 @@ import { TFeedCreateFromSource } from '../../domain/types';
 export type TScriptFunc = (
   date: Date,
   code: ESourceCode,
+  limit: number,
 ) => TFeedCreateFromSource[];
 
 export abstract class FeedScrapingService
   extends WebScrapingService
   implements IFeedScraping
 {
-  constructor(private readonly uuidGenerator: IUuidGenerator) {
+  constructor(
+    protected readonly code: ESourceCode,
+    protected readonly url: string,
+    private readonly uuidGenerator: IUuidGenerator,
+  ) {
     super();
   }
-
-  protected abstract source(): ESourceCode;
-
-  protected abstract url(): string;
 
   protected abstract script(): TScriptFunc;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async before(page: Page): Promise<void> {}
 
-  async execute(): Promise<FeedEntity[]> {
-    const page = await this.navigateToPage(this.url());
+  async execute(limit: number = 5): Promise<FeedEntity[]> {
+    try {
+      const page = await this.navigateToPage(this.url);
 
-    await this.before(page);
+      await this.before(page);
 
-    const feeds = await page.evaluate(this.script(), new Date(), this.source());
+      const feeds = await page.evaluate(
+        this.script(),
+        new Date(),
+        this.code,
+        limit,
+      );
 
-    await this.close();
+      await this.close();
 
-    return feeds.map((dto) =>
-      FeedEntity.createFromSource(this.uuidGenerator.execute(), dto),
-    );
+      return feeds.map((dto) =>
+        FeedEntity.createFromSource(this.uuidGenerator.execute(), dto),
+      );
+    } catch (error) {
+      return [];
+    }
   }
 }

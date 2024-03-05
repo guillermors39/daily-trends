@@ -6,12 +6,15 @@ import { TUuid } from '../../../../../src/shared/domain/types';
 describe('ElPaisScrapingService Test', () => {
   let webScraping: ElPaisScrapingService;
 
+  const url = 'https://elpais.com/';
+  const limit = 7;
+
   const uuidGenerator = {
     execute: jest.fn((): TUuid => 'test-test-test-test-test'),
   };
 
   beforeEach(() => {
-    webScraping = new ElPaisScrapingService(uuidGenerator);
+    webScraping = new ElPaisScrapingService(url, uuidGenerator);
   });
 
   afterEach(() => {
@@ -22,6 +25,8 @@ describe('ElPaisScrapingService Test', () => {
     const result = await webScraping.execute();
 
     expect(Array.isArray(result)).toBe(true);
+
+    expect(result.length <= limit).toBe(true);
 
     expect(uuidGenerator.execute).toHaveBeenCalledTimes(result.length);
 

@@ -6,12 +6,16 @@ import { TUuid } from '../../../../../src/shared/domain/types';
 describe('ElMundoScrapingService Test', () => {
   let webScraping: ElMundoScrapingService;
 
+  const url = 'https://www.elmundo.es/';
+
+  const limit = 7;
+
   const uuidGenerator = {
     execute: jest.fn((): TUuid => 'test-test-test-test-test'),
   };
 
   beforeEach(() => {
-    webScraping = new ElMundoScrapingService(uuidGenerator);
+    webScraping = new ElMundoScrapingService(url, uuidGenerator);
   });
 
   afterEach(() => {
@@ -19,11 +23,13 @@ describe('ElMundoScrapingService Test', () => {
   });
 
   it.only('should return feed entities', async () => {
-    const result = await webScraping.execute();
+    const result = await webScraping.execute(limit);
 
     expect(Array.isArray(result)).toBe(true);
 
     expect(uuidGenerator.execute).toHaveBeenCalledTimes(result.length);
+
+    expect(result.length <= limit).toBe(true);
 
     result.forEach((item) => {
       expect(item).toBeInstanceOf(FeedEntity);
