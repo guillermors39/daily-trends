@@ -2,6 +2,7 @@ import { Page } from 'puppeteer';
 
 import { IUuidGenerator } from '../../../shared/domain/contracts/app.contract';
 import { WebScrappingService } from '../../../shared/infrastructure/services/web-scraping.service';
+import { IFeedScrapping } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { ESourceCode } from '../../domain/enums';
 import { TFeedCreateFromSource } from '../../domain/types';
@@ -11,7 +12,10 @@ export type TScriptFunc = (
   code: ESourceCode,
 ) => TFeedCreateFromSource[];
 
-export abstract class FeedScrappingService extends WebScrappingService {
+export abstract class FeedScrappingService
+  extends WebScrappingService
+  implements IFeedScrapping
+{
   constructor(private readonly uuidGenerator: IUuidGenerator) {
     super();
   }
@@ -22,7 +26,8 @@ export abstract class FeedScrappingService extends WebScrappingService {
 
   protected abstract script(): TScriptFunc;
 
-  protected abstract before(page: Page): Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected async before(page: Page): Promise<void> {}
 
   async execute(): Promise<FeedEntity[]> {
     const page = await this.navigateToPage(this.url());

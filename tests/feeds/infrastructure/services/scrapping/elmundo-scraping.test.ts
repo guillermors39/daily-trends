@@ -3,8 +3,6 @@ import { ESourceCode } from '../../../../../src/feeds/domain/enums';
 import { ElMundoScrappingService } from '../../../../../src/feeds/infrastructure/services/scrapping/elmundo.service';
 import { TUuid } from '../../../../../src/shared/domain/types';
 
-jest.setTimeout(15000);
-
 describe('ElMundoScrappingService Test', () => {
   let webScrapping: ElMundoScrappingService;
 
