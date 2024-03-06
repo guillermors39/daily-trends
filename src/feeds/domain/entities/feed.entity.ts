@@ -16,8 +16,8 @@ import { AuthorsCollection, SourceCode, Title } from '../valueObjects/feed.vo';
 
 class Source implements TSource {
   constructor(
-    public readonly _code: SourceCode,
-    public readonly _url: StringVO,
+    private readonly _code: SourceCode,
+    private readonly _url: StringVO,
   ) {}
 
   get code(): ESourceCode {
