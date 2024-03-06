@@ -1,8 +1,8 @@
-import { IFeedFindByTitleRepository } from '../contracts';
+import { IFeedAsyncValidator, IFeedFindByTitleRepository } from '../contracts';
 import { FeedEntity } from '../entities';
 import { FeedTitleAlreadyExistsException } from '../exceptions';
 
-export class FeedCreateValidator {
+export class FeedCreateValidator implements IFeedAsyncValidator {
   constructor(private readonly repository: IFeedFindByTitleRepository) {}
 
   async validate(entity: FeedEntity): Promise<void> {
