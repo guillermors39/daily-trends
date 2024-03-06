@@ -1,7 +1,15 @@
 import { faker } from '@faker-js/faker';
 
-import { TFeedCreate } from '../../../../src/feeds/domain/types';
+import { ESourceCode } from '../../../../src/feeds/domain/enums';
+import {
+  TFeedCreate,
+  TFeedCreateFromSource,
+  TSource,
+} from '../../../../src/feeds/domain/types';
 
+export type TFeedCreateFromSourcePartial = Partial<TFeedCreate> & {
+  source?: Partial<TSource>;
+};
 export class FeedCreateMother {
   static create(dto: Partial<TFeedCreate> = {}): TFeedCreate {
     const {
@@ -18,6 +26,25 @@ export class FeedCreateMother {
       authors,
       location,
       date,
+    };
+  }
+
+  static createFromSource(
+    dto: TFeedCreateFromSourcePartial = {},
+  ): TFeedCreateFromSource {
+    const {
+      source: {
+        code = faker.helpers.arrayElement(Object.values(ESourceCode)),
+        url = faker.internet.url(),
+      } = {},
+    } = dto;
+
+    return {
+      ...this.create(dto),
+      source: {
+        code,
+        url,
+      },
     };
   }
 
