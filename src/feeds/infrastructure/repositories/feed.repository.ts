@@ -5,22 +5,11 @@ import {
   IMapper,
   IPaginatorService,
 } from '../../../shared/infrastructure/contracts';
-import {
-  IFeedCreateRepository,
-  IFeedDeleteRepository,
-  IFeedFindRepository,
-  IFeedSearchRepository,
-  IFeedUpdateRepository,
-} from '../../domain/contracts';
+import { IFeedRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
+import { ESourceCode } from '../../domain/enums';
 import { TFeedDto } from '../../domain/types';
 import { IFeedModel } from '../models';
-
-type IFeedRepository = IFeedCreateRepository &
-  IFeedFindRepository &
-  IFeedUpdateRepository &
-  IFeedDeleteRepository &
-  IFeedSearchRepository;
 
 export class FeedRepository implements IFeedRepository {
   constructor(
@@ -29,7 +18,7 @@ export class FeedRepository implements IFeedRepository {
     private readonly paginator: IPaginatorService,
   ) {}
 
-  async create(feed: FeedEntity): Promise<void> {
+  async create(...feed: FeedEntity[]): Promise<void> {
     const dto = this.mapper.fromEntityToDto(feed);
 
     await this.model.create(dto);
@@ -45,16 +34,28 @@ export class FeedRepository implements IFeedRepository {
     return FeedEntity.fromDto(dto);
   }
 
+  async findByTitle(title: string): Promise<FeedEntity | null> {
+    const model = await this.model.findOne({
+      title,
+      'source.code': ESourceCode.local,
+    });
+
+    if (!model) return null;
+
+    const dto = this.mapper.fromInfraToDto(model);
+
+    return FeedEntity.fromDto(dto);
+  }
+
   async update(feed: FeedEntity): Promise<void> {
     const { uuid, ...dto } = this.mapper.fromEntityToDto(feed);
 
-    const { title, subtitle, body, location, authors } = dto;
+    const { title, body, location, authors } = dto;
 
     await this.model.updateOne(
       { uuid },
       {
         title,
-        subtitle,
         body,
         location,
         authors,

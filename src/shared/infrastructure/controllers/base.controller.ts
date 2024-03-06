@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-import { NotFoundException } from '../../domain/exceptions';
+import {
+  NotFoundException,
+  ValidationException,
+} from '../../domain/exceptions';
 import { TSchemasConfig } from '../contracts';
-import { NotFoundError } from '../errors/not-found.error';
+import { NotFoundError, ValidationError } from '../errors';
 import { validateRequest } from '../helpers/request';
 
 export abstract class BaseController {
@@ -32,6 +35,10 @@ export abstract class BaseController {
       // TODO: make a error factory
       if (error instanceof NotFoundException) {
         return next(new NotFoundError(error.message));
+      }
+
+      if (error instanceof ValidationException) {
+        return next(new ValidationError(error.message));
       }
 
       next(error);

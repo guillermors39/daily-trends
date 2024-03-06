@@ -28,7 +28,7 @@ describe('FeedRepository Test', () => {
 
     await repository.create(feed);
 
-    expect(FeedModel.create).toHaveBeenCalledWith(mappedDto);
+    expect(FeedModel.create).toHaveBeenCalledWith([mappedDto]);
     expect(FeedModel.create).toHaveBeenCalledTimes(1);
   });
 });

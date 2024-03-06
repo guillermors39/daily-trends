@@ -1,12 +1,19 @@
 import { faker } from '@faker-js/faker';
 
-import { TFeedCreate } from '../../../../src/feeds/domain/types';
+import {
+  TFeedCreate,
+  TFeedCreateFromSource,
+  TSource,
+} from '../../../../src/feeds/domain/types';
+import { SourceCode } from '../../../../src/feeds/domain/valueObjects/feed.vo';
 
+export type TFeedCreateFromSourcePartial = Partial<TFeedCreate> & {
+  source?: Partial<TSource>;
+};
 export class FeedCreateMother {
   static create(dto: Partial<TFeedCreate> = {}): TFeedCreate {
     const {
       title = faker.lorem.words({ min: 3, max: 10 }),
-      subtitle = faker.lorem.words({ min: 0, max: 20 }),
       body = faker.lorem.paragraphs({ min: 1, max: 3 }),
       authors = this.authors(),
       location = faker.location.city(),
@@ -15,11 +22,29 @@ export class FeedCreateMother {
 
     return {
       title,
-      subtitle,
       body,
       authors,
       location,
       date,
+    };
+  }
+
+  static createFromSource(
+    dto: TFeedCreateFromSourcePartial = {},
+  ): TFeedCreateFromSource {
+    const {
+      source: {
+        code = faker.helpers.arrayElement(SourceCode.availables),
+        url = faker.internet.url(),
+      } = {},
+    } = dto;
+
+    return {
+      ...this.create(dto),
+      source: {
+        code,
+        url,
+      },
     };
   }
 

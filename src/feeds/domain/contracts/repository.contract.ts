@@ -1,10 +1,10 @@
 import { PaginatedDto } from '../../../shared/domain/dtos/paginated.dto';
 import { TUuid } from '../../../shared/domain/types';
-import { TPaginationParams } from '../../../shared/infrastructure/contracts';
 import { FeedEntity } from '../entities';
+import { TPaginationParams } from './services.contract';
 
 export interface IFeedCreateRepository {
-  create(feed: FeedEntity): Promise<void>;
+  create(...feed: FeedEntity[]): Promise<void>;
 }
 
 export interface IFeedFindRepository {
@@ -22,3 +22,14 @@ export interface IFeedDeleteRepository {
 export interface IFeedSearchRepository {
   search(params: TPaginationParams): Promise<PaginatedDto<FeedEntity>>;
 }
+
+export interface IFeedFindByTitleRepository {
+  findByTitle(title: string): Promise<FeedEntity | null>;
+}
+
+export type IFeedRepository = IFeedCreateRepository &
+  IFeedFindRepository &
+  IFeedUpdateRepository &
+  IFeedDeleteRepository &
+  IFeedSearchRepository &
+  IFeedFindByTitleRepository;

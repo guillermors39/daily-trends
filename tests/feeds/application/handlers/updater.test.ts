@@ -1,5 +1,8 @@
 import { FeedUpdateHandler } from '../../../../src/feeds/application/handlers';
-import { IFeedUpdateRepository } from '../../../../src/feeds/domain/contracts';
+import {
+  IFeedAsyncValidator,
+  IFeedUpdateRepository,
+} from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { TFeedCreate, TFeedUpdate } from '../../../../src/feeds/domain/types';
 import { IHandler } from '../../../../src/shared/domain/contracts/app.contract';
@@ -24,24 +27,36 @@ describe('FeedUpdateHandler Test', () => {
     update: jest.fn(() => Promise.resolve()),
   }));
 
+  const mockValidator: IFeedAsyncValidator = {
+    validate: jest.fn(async () => {}),
+  };
+
   beforeEach(() => {
     const finder = new MockFinder();
     repository = new MockRepository();
 
-    handler = new FeedUpdateHandler(finder, repository);
+    handler = new FeedUpdateHandler(finder, mockValidator, repository);
     data = FeedCreateMother.create();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should return entity when exists', async () => {
     const updateData: TFeedUpdate = {
       ...data,
-      uuid: entityMocked.uuid,
+      uuid: entityMocked.uuid.value,
     };
 
     const updatedEntity = await handler.execute(updateData);
 
     expect(repository.update).toHaveBeenCalledWith(updatedEntity);
 
-    expect(updatedEntity.uuid).toEqual(entityMocked.uuid);
+    expect(mockValidator.validate).toHaveBeenCalledTimes(1);
+
+    expect(mockValidator.validate).toHaveBeenCalledWith(updatedEntity);
+
+    expect(updatedEntity.uuid.value).toEqual(entityMocked.uuid.value);
   });
 });
