@@ -16,6 +16,7 @@ export class FeedResource extends BaseJsonResource {
       title: this.entity.title,
       subtitle: this.entity.subtitle,
       authors: this.entity.authors,
+      location: this.entity.location,
       source: this.entity.source,
       date: this.entity.date.toISOString(),
     };
