@@ -1,13 +1,12 @@
-import { faker } from '@faker-js/faker';
-
 import { FeedCreateHandler } from '../../../../src/feeds/application/handlers';
 import { IFeedCreateRepository } from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { IUuidGenerator } from '../../../../src/shared/domain/contracts/app.contract';
 import { TUuid } from '../../../../src/shared/domain/types';
+import { UuidBuilder } from '../../../shared/domain/builders/uuid.builder';
 import { FeedCreateMother } from '../../domain/mothers/create.mother';
 
-const uuidMoked = faker.string.uuid() as TUuid;
+const uuidMoked = UuidBuilder.random();
 
 describe('FeedCreateHandler Test', () => {
   let handler: FeedCreateHandler;

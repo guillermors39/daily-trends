@@ -28,7 +28,7 @@ export class TrendsService implements ITrendService {
     );
   }
 
-  async execute(filters: TTrendsFilter): Promise<FeedEntity[]> {
+  async execute(filters: TTrendsFilter = {}): Promise<FeedEntity[]> {
     const { limit = this.config.limit, sources = [] } = filters;
 
     const promises = this.services(sources).map((service) =>

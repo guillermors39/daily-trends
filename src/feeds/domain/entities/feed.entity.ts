@@ -1,55 +1,73 @@
 import { AggregateEntity } from '../../../shared/domain/entities';
 import { TUuid } from '../../../shared/domain/types';
+import {
+  DateVO,
+  StringVO,
+  Uuid,
+} from '../../../shared/domain/valueObjects/base.vo';
 import { ESourceCode } from '../enums';
-import { TFeedCreate, TFeedCreateFromSource, TFeedDto } from '../types';
+import {
+  TFeedCreate,
+  TFeedCreateFromSource,
+  TFeedDto,
+  TSource,
+} from '../types';
+import { AuthorsCollection, SourceCode, Title } from '../valueObjects/feed.vo';
 
-class Source {
+class Source implements TSource {
   constructor(
-    public readonly code: ESourceCode,
-    public readonly url: string,
+    private readonly _code: SourceCode,
+    private readonly _url: StringVO,
   ) {}
 
+  get code(): ESourceCode {
+    return this._code.value;
+  }
+
+  get url(): string {
+    return this._url.value;
+  }
+
   static fromLocal(uuid: string): Source {
-    return new Source(ESourceCode.local, `/feeds/${uuid}`);
+    return new Source(SourceCode.local(), new StringVO(`/feeds/${uuid}`));
+  }
+
+  static create(code: ESourceCode, url: string): Source {
+    return new Source(new SourceCode(code), new StringVO(url));
   }
 }
 
 export class FeedEntity extends AggregateEntity implements TFeedDto {
   constructor(
-    private _uuid: TUuid,
-    private _title: string,
-    private _subtitle: string,
-    private _body: string,
-    private _location: string,
-    private _authors: string[],
+    private _uuid: Uuid,
+    private _title: Title,
+    private _body: StringVO,
+    private _location: StringVO,
+    private _authors: AuthorsCollection,
     private _source: Source,
-    private _date: Date,
+    private _date: DateVO,
   ) {
     super();
   }
 
   get uuid(): TUuid {
-    return this._uuid;
+    return this._uuid.value;
   }
 
   get title(): string {
-    return this._title;
-  }
-
-  get subtitle(): string {
-    return this._subtitle;
+    return this._title.value;
   }
 
   get body(): string {
-    return this._body;
+    return this._body.value;
   }
 
   get location(): string {
-    return this._location;
+    return this._location.value;
   }
 
   get authors(): string[] {
-    return this._authors;
+    return this._authors.toPrimitive();
   }
 
   get source(): Source {
@@ -57,73 +75,43 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
   }
 
   get date(): Date {
-    return this._date;
+    return this._date.value;
+  }
+
+  private static base(dto: TFeedDto): FeedEntity {
+    const source = Source.create(dto.source.code, dto.source.url);
+
+    const { uuid, title, body, location, authors, date } = dto;
+
+    return new FeedEntity(
+      new Uuid(uuid),
+      new Title(title),
+      new StringVO(body),
+      new StringVO(location),
+      AuthorsCollection.fromStrings(authors),
+      source,
+      new DateVO(date),
+    );
   }
 
   static create(uuid: TUuid, dto: TFeedCreate): FeedEntity {
-    const { title, subtitle, body, location, authors, date } = dto;
-
     const source = Source.fromLocal(uuid);
 
-    return new FeedEntity(
-      uuid,
-      title,
-      subtitle,
-      body,
-      location,
-      authors,
-      source,
-      new Date(date),
-    );
+    return this.base({ uuid, ...dto, source });
   }
 
   static createFromSource(uuid: TUuid, dto: TFeedCreateFromSource): FeedEntity {
-    const {
-      title,
-      subtitle,
-      body,
-      location,
-      authors,
-      date,
-      source: sourceDto,
-    } = dto;
-
-    const source = new Source(sourceDto.code, sourceDto.url);
-
-    return new FeedEntity(
-      uuid,
-      title,
-      subtitle,
-      body,
-      location,
-      authors,
-      source,
-      new Date(date),
-    );
+    return this.base({ uuid, ...dto });
   }
 
   static fromDto(dto: TFeedDto): FeedEntity {
-    const source = new Source(dto.source.code, dto.source.url);
-
-    const { uuid, title, subtitle, body, location, authors, date } = dto;
-
-    return new FeedEntity(
-      uuid,
-      title,
-      subtitle,
-      body,
-      location,
-      authors,
-      source,
-      new Date(date),
-    );
+    return this.base(dto);
   }
 
-  update({ title, subtitle, body, location, authors }: TFeedCreate): void {
-    this._title = title;
-    this._subtitle = subtitle;
-    this._body = body;
-    this._authors = authors;
-    this._location = location;
+  update({ title, body, location, authors }: TFeedCreate): void {
+    this._title = new Title(title);
+    this._body = new StringVO(body);
+    this._authors = AuthorsCollection.fromStrings(authors);
+    this._location = new StringVO(location);
   }
 }

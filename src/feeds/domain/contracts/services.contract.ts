@@ -21,5 +21,5 @@ export interface IScrapingServiceFactory {
 }
 
 export interface ITrendService {
-  execute(filters: TTrendsFilter): Promise<FeedEntity[]>;
+  execute(filters?: TTrendsFilter): Promise<FeedEntity[]>;
 }

@@ -4,6 +4,10 @@ export interface IUuidGenerator {
   execute(): TUuid;
 }
 
+export interface IValueObject<T> {
+  readonly value: T;
+}
+
 export interface IHandler<Input = unknown, Output = void> {
   execute(dto?: Input): Output | Promise<Output>;
 }

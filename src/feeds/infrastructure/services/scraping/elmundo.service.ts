@@ -76,10 +76,9 @@ export class ElMundoScrapingService extends FeedScrapingService {
 
         return {
           title,
-          subtitle: '',
           body: '',
           authors,
-          location: locations[0],
+          location: locations[0] ?? '',
           date,
           source: {
             code,

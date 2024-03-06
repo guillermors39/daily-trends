@@ -68,7 +68,6 @@ export class ElPaisScrapingService extends FeedScrapingService {
         return {
           date,
           title,
-          subtitle: '',
           body,
           authors,
           location,

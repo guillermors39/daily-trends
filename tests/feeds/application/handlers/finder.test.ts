@@ -1,9 +1,8 @@
-import { faker } from '@faker-js/faker';
-
 import { FeedFindHandler } from '../../../../src/feeds/application/handlers';
 import { IFeedFindRepository } from '../../../../src/feeds/domain/contracts';
 import { FeedNotFoundException } from '../../../../src/feeds/domain/exceptions';
 import { TUuid } from '../../../../src/shared/domain/types';
+import { UuidBuilder } from '../../../shared/domain/builders/uuid.builder';
 import { FeedEntityMother } from '../../domain/mothers/entity.mother';
 
 describe('FeedFindeHandler Test', () => {
@@ -36,7 +35,7 @@ describe('FeedFindeHandler Test', () => {
   });
 
   it('should throw a not found exception when feed is not found', async () => {
-    const nonExistentUuid = faker.string.uuid() as TUuid;
+    const nonExistentUuid = UuidBuilder.random();
 
     await expect(handler.execute(nonExistentUuid)).rejects.toThrow(
       FeedNotFoundException,

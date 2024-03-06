@@ -2,6 +2,7 @@ import { FeedEntity } from '../../../../../src/feeds/domain/entities';
 import { ESourceCode } from '../../../../../src/feeds/domain/enums';
 import { ElMundoScrapingService } from '../../../../../src/feeds/infrastructure/services/scraping/elmundo.service';
 import { TUuid } from '../../../../../src/shared/domain/types';
+import { UuidBuilder } from '../../../../shared/domain/builders/uuid.builder';
 
 describe('ElMundoScrapingService Test', () => {
   let webScraping: ElMundoScrapingService;
@@ -11,7 +12,7 @@ describe('ElMundoScrapingService Test', () => {
   const limit = 7;
 
   const uuidGenerator = {
-    execute: jest.fn((): TUuid => 'test-test-test-test-test'),
+    execute: jest.fn((): TUuid => UuidBuilder.random()),
   };
 
   beforeEach(() => {
