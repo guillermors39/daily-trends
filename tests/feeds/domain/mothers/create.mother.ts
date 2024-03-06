@@ -6,7 +6,6 @@ export class FeedCreateMother {
   static create(dto: Partial<TFeedCreate> = {}): TFeedCreate {
     const {
       title = faker.lorem.words({ min: 3, max: 10 }),
-      subtitle = faker.lorem.words({ min: 0, max: 20 }),
       body = faker.lorem.paragraphs({ min: 1, max: 3 }),
       authors = this.authors(),
       location = faker.location.city(),
@@ -15,7 +14,6 @@ export class FeedCreateMother {
 
     return {
       title,
-      subtitle,
       body,
       authors,
       location,
