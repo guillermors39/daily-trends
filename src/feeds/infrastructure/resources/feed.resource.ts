@@ -11,17 +11,16 @@ export class FeedResource extends BaseJsonResource {
   }
 
   response(): object {
+    const dto = this.entity.toPrimitive();
+
     return {
-      uuid: this.entity.uuid,
-      title: this.entity.title,
-      body: this.entity.body,
-      authors: this.entity.authors,
-      location: this.entity.location,
-      source: {
-        code: this.entity.source.code,
-        url: this.entity.source.url,
-      },
-      date: this.entity.date.toISOString(),
+      uuid: dto.uuid,
+      title: dto.title,
+      body: dto.body,
+      authors: dto.authors,
+      location: dto.location,
+      source: dto.source,
+      date: dto.date.toISOString(),
     };
   }
 }

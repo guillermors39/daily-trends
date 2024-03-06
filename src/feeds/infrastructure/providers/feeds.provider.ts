@@ -11,6 +11,8 @@ import {
   FeedUpdateHandler,
 } from '../../application/handlers';
 import { TrendsSearchHandler } from '../../application/handlers/trends.handler';
+import { FeedCreateValidator } from '../../domain/services/create.validator';
+import { FeedUpdateValidator } from '../../domain/services/update.validator';
 import {
   FeedsCreateController,
   FeedsDeleteController,
@@ -25,29 +27,31 @@ import { FeedRepository } from '../repositories/feed.repository';
 import { ScrapingServiceFactory } from '../services/scraping-service.factory';
 import { TrendsService } from '../services/trends.service';
 
-const feedMapper = new FeedMapper();
+const mapper = new FeedMapper();
 
-const feedRepository = new FeedRepository(
-  FeedModel,
-  feedMapper,
-  paginatorService,
+const repository = new FeedRepository(FeedModel, mapper, paginatorService);
+
+const createValidator = new FeedCreateValidator(repository);
+
+const updateValidator = new FeedUpdateValidator(repository);
+
+const searchHandler = new FeedSearchHandler(repository);
+
+const createHandler = new FeedCreateHandler(
+  uuidGenerator,
+  createValidator,
+  repository,
 );
 
-const feedSearchHandler = new FeedSearchHandler(feedRepository);
+const findHandler = new FeedFindHandler(repository);
 
-const feedCreateHandler = new FeedCreateHandler(uuidGenerator, feedRepository);
-
-const feedFindHandler = new FeedFindHandler(feedRepository);
-
-const feedsUpdateHandler = new FeedUpdateHandler(
-  feedFindHandler,
-  feedRepository,
+const updateHandler = new FeedUpdateHandler(
+  findHandler,
+  updateValidator,
+  repository,
 );
 
-const feedDeleteHandler = new FeedDeleteHandler(
-  feedFindHandler,
-  feedRepository,
-);
+const deleteHandler = new FeedDeleteHandler(findHandler, repository);
 
 const scrapingServiceFactory = new ScrapingServiceFactory(uuidGenerator);
 
@@ -56,29 +60,26 @@ const trendsService = new TrendsService(
   config.scraping,
 );
 
-const trendsSearchHandler = new TrendsSearchHandler(
-  trendsService,
-  feedRepository,
-);
+const trendsSearchHandler = new TrendsSearchHandler(trendsService, repository);
 
-const feedsCreateController = new FeedsCreateController(feedCreateHandler);
+const createController = new FeedsCreateController(createHandler);
 
-const feedsDeleteController = new FeedsDeleteController(feedDeleteHandler);
+const deleteController = new FeedsDeleteController(deleteHandler);
 
-const feedsFindController = new FeedsFindController(feedFindHandler);
+const findController = new FeedsFindController(findHandler);
 
-const feedsSearchController = new FeedsSearchController(feedSearchHandler);
+const searchController = new FeedsSearchController(searchHandler);
 
-const feedsUpdateController = new FeedsUpdateController(feedsUpdateHandler);
+const updateController = new FeedsUpdateController(updateHandler);
 
 const trendsController = new TrendsController(trendsSearchHandler);
 
 export {
-  feedMapper,
-  feedsCreateController,
-  feedsDeleteController,
-  feedsFindController,
-  feedsSearchController,
-  feedsUpdateController,
+  mapper as feedMapper,
+  createController as feedsCreateController,
+  deleteController as feedsDeleteController,
+  findController as feedsFindController,
+  searchController as feedsSearchController,
+  updateController as feedsUpdateController,
   trendsController,
 };

@@ -14,6 +14,7 @@ const FeedSchema = new Schema<TFeedDto>(
       index: true,
     },
     title: SchemaTypes.String,
+    body: SchemaTypes.String,
     authors: SchemaTypes.Array,
     date: {
       type: SchemaTypes.Date,

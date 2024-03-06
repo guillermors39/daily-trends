@@ -1,5 +1,8 @@
 import { FeedCreateHandler } from '../../../../src/feeds/application/handlers';
-import { IFeedCreateRepository } from '../../../../src/feeds/domain/contracts';
+import {
+  IFeedAsyncValidator,
+  IFeedCreateRepository,
+} from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { IUuidGenerator } from '../../../../src/shared/domain/contracts/app.contract';
 import { TUuid } from '../../../../src/shared/domain/types';
@@ -21,11 +24,15 @@ describe('FeedCreateHandler Test', () => {
     execute: jest.fn((): TUuid => uuidMoked),
   }));
 
+  const mockValidator: IFeedAsyncValidator = {
+    validate: jest.fn(async () => {}),
+  };
+
   beforeEach(() => {
     repository = new MockRepository();
     uuidGenerator = new MockUuidGenerator();
 
-    handler = new FeedCreateHandler(uuidGenerator, repository);
+    handler = new FeedCreateHandler(uuidGenerator, mockValidator, repository);
   });
 
   it('should create FeedEntity and call repository.create', async () => {
@@ -36,6 +43,10 @@ describe('FeedCreateHandler Test', () => {
     await expect(handler.execute(dto)).resolves.toEqual(mockEntity);
 
     expect(uuidGenerator.execute).toHaveBeenCalledTimes(1);
+
+    expect(mockValidator.validate).toHaveBeenCalledTimes(1);
+
+    expect(mockValidator.validate).toHaveBeenCalledWith(mockEntity);
 
     expect(repository.create).toHaveBeenCalledWith(mockEntity);
   });

@@ -14,18 +14,18 @@ import {
 } from '../types';
 import { AuthorsCollection, SourceCode, Title } from '../valueObjects/feed.vo';
 
-class Source implements TSource {
+class Source {
   constructor(
     private readonly _code: SourceCode,
     private readonly _url: StringVO,
   ) {}
 
-  get code(): ESourceCode {
-    return this._code.value;
+  get code(): SourceCode {
+    return this._code;
   }
 
-  get url(): string {
-    return this._url.value;
+  get url(): StringVO {
+    return this._url;
   }
 
   static fromLocal(uuid: string): Source {
@@ -35,9 +35,16 @@ class Source implements TSource {
   static create(code: ESourceCode, url: string): Source {
     return new Source(new SourceCode(code), new StringVO(url));
   }
+
+  toPrimitive(): TSource {
+    return {
+      code: this.code.value,
+      url: this.url.value,
+    };
+  }
 }
 
-export class FeedEntity extends AggregateEntity implements TFeedDto {
+export class FeedEntity extends AggregateEntity {
   constructor(
     private _uuid: Uuid,
     private _title: Title,
@@ -50,32 +57,32 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
     super();
   }
 
-  get uuid(): TUuid {
-    return this._uuid.value;
+  get uuid(): Uuid {
+    return this._uuid;
   }
 
-  get title(): string {
-    return this._title.value;
+  get title(): Title {
+    return this._title;
   }
 
-  get body(): string {
-    return this._body.value;
+  get body(): StringVO {
+    return this._body;
   }
 
-  get location(): string {
-    return this._location.value;
+  get location(): StringVO {
+    return this._location;
   }
 
-  get authors(): string[] {
-    return this._authors.toPrimitive();
+  get authors(): AuthorsCollection {
+    return this._authors;
   }
 
   get source(): Source {
     return this._source;
   }
 
-  get date(): Date {
-    return this._date.value;
+  get date(): DateVO {
+    return this._date;
   }
 
   private static base(dto: TFeedDto): FeedEntity {
@@ -97,7 +104,7 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
   static create(uuid: TUuid, dto: TFeedCreate): FeedEntity {
     const source = Source.fromLocal(uuid);
 
-    return this.base({ uuid, ...dto, source });
+    return this.base({ uuid, ...dto, source: source.toPrimitive() });
   }
 
   static createFromSource(uuid: TUuid, dto: TFeedCreateFromSource): FeedEntity {
@@ -113,5 +120,17 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
     this._body = new StringVO(body);
     this._authors = AuthorsCollection.fromStrings(authors);
     this._location = new StringVO(location);
+  }
+
+  toPrimitive(): TFeedDto {
+    return {
+      uuid: this.uuid.value,
+      title: this.title.value,
+      body: this.body.value,
+      source: this.source.toPrimitive(),
+      date: this.date.value,
+      location: this.location.value,
+      authors: this.authors.toPrimitive(),
+    };
   }
 }
