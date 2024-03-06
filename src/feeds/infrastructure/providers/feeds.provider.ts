@@ -12,6 +12,7 @@ import {
 } from '../../application/handlers';
 import { TrendsSearchHandler } from '../../application/handlers/trends.handler';
 import { FeedCreateValidator } from '../../domain/services/create.validator';
+import { FeedDeleteValidator } from '../../domain/services/delete.validator';
 import { FeedUpdateValidator } from '../../domain/services/update.validator';
 import {
   FeedsCreateController,
@@ -35,6 +36,8 @@ const createValidator = new FeedCreateValidator(repository);
 
 const updateValidator = new FeedUpdateValidator(repository);
 
+const deleteValidator = new FeedDeleteValidator();
+
 const searchHandler = new FeedSearchHandler(repository);
 
 const createHandler = new FeedCreateHandler(
@@ -51,7 +54,11 @@ const updateHandler = new FeedUpdateHandler(
   repository,
 );
 
-const deleteHandler = new FeedDeleteHandler(findHandler, repository);
+const deleteHandler = new FeedDeleteHandler(
+  findHandler,
+  deleteValidator,
+  repository,
+);
 
 const scrapingServiceFactory = new ScrapingServiceFactory(uuidGenerator);
 
