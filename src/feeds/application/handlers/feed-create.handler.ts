@@ -2,17 +2,14 @@ import {
   IHandler,
   IUuidGenerator,
 } from '../../../shared/domain/contracts/app.contract';
-import {
-  IFeedAsyncValidator,
-  IFeedCreateRepository,
-} from '../../domain/contracts';
+import { IFeedValidator, IFeedCreateRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedCreate } from '../../domain/types';
 
 export class FeedCreateHandler implements IHandler<TFeedCreate, FeedEntity> {
   constructor(
     private readonly uuidGenerator: IUuidGenerator,
-    private readonly validator: IFeedAsyncValidator,
+    private readonly validator: IFeedValidator,
     private readonly repository: IFeedCreateRepository,
   ) {}
 

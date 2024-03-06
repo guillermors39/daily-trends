@@ -24,6 +24,6 @@ export interface ITrendService {
   execute(filters?: TTrendsFilter): Promise<FeedEntity[]>;
 }
 
-export interface IFeedAsyncValidator {
-  validate(entity: FeedEntity): Promise<void>;
+export interface IFeedValidator {
+  validate(entity: FeedEntity): void | Promise<void>;
 }

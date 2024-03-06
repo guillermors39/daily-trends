@@ -1,6 +1,6 @@
 import { FeedCreateHandler } from '../../../../src/feeds/application/handlers';
 import {
-  IFeedAsyncValidator,
+  IFeedValidator,
   IFeedCreateRepository,
 } from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
@@ -24,7 +24,7 @@ describe('FeedCreateHandler Test', () => {
     execute: jest.fn((): TUuid => uuidMoked),
   }));
 
-  const mockValidator: IFeedAsyncValidator = {
+  const mockValidator: IFeedValidator = {
     validate: jest.fn(async () => {}),
   };
 

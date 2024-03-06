@@ -1,6 +1,6 @@
 import { FeedUpdateHandler } from '../../../../src/feeds/application/handlers';
 import {
-  IFeedAsyncValidator,
+  IFeedValidator,
   IFeedUpdateRepository,
 } from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
@@ -27,7 +27,7 @@ describe('FeedUpdateHandler Test', () => {
     update: jest.fn(() => Promise.resolve()),
   }));
 
-  const mockValidator: IFeedAsyncValidator = {
+  const mockValidator: IFeedValidator = {
     validate: jest.fn(async () => {}),
   };
 

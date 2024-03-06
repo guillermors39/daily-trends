@@ -1,16 +1,13 @@
 import { IHandler } from '../../../shared/domain/contracts/app.contract';
 import { TUuid } from '../../../shared/domain/types';
-import {
-  IFeedAsyncValidator,
-  IFeedUpdateRepository,
-} from '../../domain/contracts';
+import { IFeedValidator, IFeedUpdateRepository } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedUpdate } from '../../domain/types';
 
 export class FeedUpdateHandler implements IHandler<TFeedUpdate, FeedEntity> {
   constructor(
     private readonly finder: IHandler<TUuid, FeedEntity>,
-    private readonly validator: IFeedAsyncValidator,
+    private readonly validator: IFeedValidator,
     private readonly repository: IFeedUpdateRepository,
   ) {}
 

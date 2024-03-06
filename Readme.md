@@ -10,6 +10,7 @@
 - [Installing](#installing)
   - [Environment](#environment)
   - [Docker](#docker)
+- [Architecture](#architecture)
 - [Development](#development)
 - [Production](#production)
 - [Testing](#testing)
@@ -42,6 +43,15 @@ And the `npm` commands could execute on `api` service
 ```bash
 docker compose exec api bash
 ```
+
+## Architecture
+
+![plot](./images/macro-vision.png)
+![plot](./images/services-detail.png)
+
+## API Documentation
+API Documentation:
+[API Documentation](https://documenter.getpostman.com/view/7591008/2sA2xfXD2S)
 
 ## Development
 
