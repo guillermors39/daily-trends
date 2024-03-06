@@ -1,8 +1,10 @@
 import Joi from 'joi';
 
+import { Title } from '../../domain/valueObjects/feed.vo';
+
 export const body = () =>
   Joi.object({
-    title: Joi.string().required(),
+    title: Joi.string().required().min(Title.min),
     body: Joi.string().required(),
     date: Joi.date().required(),
     authors: Joi.array().items(Joi.string()).required().min(1),
