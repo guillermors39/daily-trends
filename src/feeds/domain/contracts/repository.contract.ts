@@ -22,3 +22,14 @@ export interface IFeedDeleteRepository {
 export interface IFeedSearchRepository {
   search(params: TPaginationParams): Promise<PaginatedDto<FeedEntity>>;
 }
+
+export interface IFeedFindByTitleRepository {
+  findByTitle(title: string): Promise<FeedEntity | null>;
+}
+
+export type IFeedRepository = IFeedCreateRepository &
+  IFeedFindRepository &
+  IFeedUpdateRepository &
+  IFeedDeleteRepository &
+  IFeedSearchRepository &
+  IFeedFindByTitleRepository;

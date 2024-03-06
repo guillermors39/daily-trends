@@ -8,7 +8,7 @@ describe('FeedDeleteHandler Test', () => {
 
   const finder = {
     execute: jest.fn((uuid: TUuid) => {
-      if (uuid === entityMocked.uuid) {
+      if (uuid === entityMocked.uuid.value) {
         return Promise.resolve(entityMocked);
       }
 
@@ -28,10 +28,12 @@ describe('FeedDeleteHandler Test', () => {
   });
 
   it('should call repository to delete', async () => {
-    await expect(handler.execute(entityMocked.uuid)).resolves.toBeUndefined();
+    await expect(
+      handler.execute(entityMocked.uuid.value),
+    ).resolves.toBeUndefined();
 
-    expect(finder.execute).toHaveBeenCalledWith(entityMocked.uuid);
+    expect(finder.execute).toHaveBeenCalledWith(entityMocked.uuid.value);
 
-    expect(repository.delete).toHaveBeenCalledWith(entityMocked.uuid);
+    expect(repository.delete).toHaveBeenCalledWith(entityMocked.uuid.value);
   });
 });

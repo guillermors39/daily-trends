@@ -23,3 +23,7 @@ export interface IScrapingServiceFactory {
 export interface ITrendService {
   execute(filters?: TTrendsFilter): Promise<FeedEntity[]>;
 }
+
+export interface IFeedAsyncValidator {
+  validate(entity: FeedEntity): Promise<void>;
+}

@@ -1,5 +1,4 @@
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
-import { ESourceCode } from '../../../../src/feeds/domain/enums';
 import { UuidBuilder } from '../../../shared/domain/builders/uuid.builder';
 import { FeedCreateMother } from '../mothers/create.mother';
 
@@ -13,9 +12,9 @@ describe('FeedEntity Test', () => {
 
     expect(entity).toBeInstanceOf(FeedEntity);
 
-    expect(entity.date).toBeInstanceOf(Date);
+    expect(entity.date.value).toBeInstanceOf(Date);
 
-    expect(entity.source.code).toBe(ESourceCode.local);
+    expect(entity.source.code.isLocal()).toBe(true);
   });
 
   it('from dto', () => {
@@ -27,8 +26,8 @@ describe('FeedEntity Test', () => {
 
     expect(entity).toBeInstanceOf(FeedEntity);
 
-    expect(entity.uuid).toBe(uuid);
+    expect(entity.uuid.value).toBe(uuid);
 
-    expect(entity.source.code).toBe(dto.source.code);
+    expect(entity.source.code.value).toBe(dto.source.code);
   });
 });
