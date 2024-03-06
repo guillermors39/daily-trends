@@ -1,1 +1,1 @@
-export * from './feed.validations';
+export * from './request.validations';

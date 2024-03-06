@@ -35,7 +35,7 @@ export class AuthorsCollection extends Array<Author> {
 }
 
 export class SourceCode extends StringVO<ESourceCode> {
-  public readonly availables = Object.values(ESourceCode);
+  public static readonly availables = Object.values(ESourceCode);
 
   constructor(value: ESourceCode) {
     super(value);
@@ -44,7 +44,7 @@ export class SourceCode extends StringVO<ESourceCode> {
   }
 
   private _validate(value: unknown) {
-    if (!this.availables.includes(value as ESourceCode)) {
+    if (!SourceCode.availables.includes(value as ESourceCode)) {
       throw new ValidationException(`Invalid source code «${value}»`);
     }
   }
@@ -63,5 +63,9 @@ export class SourceCode extends StringVO<ESourceCode> {
 
   isElMundo(): boolean {
     return this._value === ESourceCode.elMundo;
+  }
+
+  isExternal(): boolean {
+    return !this.isLocal();
   }
 }

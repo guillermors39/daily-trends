@@ -7,18 +7,7 @@ export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
   fromEntityToDto(entity: FeedEntity): TFeedDto;
   fromEntityToDto(entity: FeedEntity[]): TFeedDto[];
   fromEntityToDto(entity: FeedEntity | FeedEntity[]): TFeedDto | TFeedDto[] {
-    const mapItem = (entity: FeedEntity) => ({
-      uuid: entity.uuid,
-      title: entity.title,
-      body: entity.body,
-      authors: entity.authors.map((item) => item),
-      location: entity.location,
-      date: entity.date,
-      source: {
-        code: entity.source.code,
-        url: entity.source.url,
-      },
-    });
+    const mapItem = (entity: FeedEntity) => entity.toPrimitive();
 
     return Array.isArray(entity) ? entity.map(mapItem) : mapItem(entity);
   }
