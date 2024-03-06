@@ -20,7 +20,11 @@ describe('FeedDeleteHandler Test', () => {
     delete: jest.fn(() => Promise.resolve()),
   };
 
-  const handler = new FeedDeleteHandler(finder, repository);
+  const validator = {
+    validate: jest.fn(() => {}),
+  };
+
+  const handler = new FeedDeleteHandler(finder, validator, repository);
 
   beforeEach(() => {
     repository.delete.mockClear();
@@ -33,6 +37,8 @@ describe('FeedDeleteHandler Test', () => {
     ).resolves.toBeUndefined();
 
     expect(finder.execute).toHaveBeenCalledWith(entityMocked.uuid.value);
+
+    expect(validator.validate).toHaveBeenCalled();
 
     expect(repository.delete).toHaveBeenCalledWith(entityMocked.uuid.value);
   });
