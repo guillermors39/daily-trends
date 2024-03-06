@@ -17,6 +17,13 @@ export const config = {
     password: process.env.DB_PASSWORD || 'secret',
     name: process.env.DB_NAME || 'challenge',
   },
+  scraping: {
+    limit: 5,
+    portals: {
+      [ESourceCode.elMundo]: 'https://www.elmundo.es/',
+      [ESourceCode.elPais]: 'https://elpais.com/',
+    },
+  },
 };
 
 export type TConfig = typeof config;
@@ -34,9 +41,4 @@ type TNewsPortalConfig = Partial<Record<ESourceCode, string>>;
 export type TScrapingConfig = {
   readonly limit: number;
   readonly portals: TNewsPortalConfig;
-};
-
-export const portals: TNewsPortalConfig = {
-  [ESourceCode.elMundo]: 'https://www.elmundo.es/',
-  [ESourceCode.elPais]: 'https://elpais.com/',
 };

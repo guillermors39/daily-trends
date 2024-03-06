@@ -1,3 +1,4 @@
+import { config } from '../../../shared/infrastructure/configs/config';
 import {
   paginatorService,
   uuidGenerator,
@@ -9,16 +10,20 @@ import {
   FeedSearchHandler,
   FeedUpdateHandler,
 } from '../../application/handlers';
+import { TrendsSearchHandler } from '../../application/handlers/trends.handler';
 import {
   FeedsCreateController,
   FeedsDeleteController,
   FeedsFindController,
   FeedsSearchController,
   FeedsUpdateController,
+  TrendsController,
 } from '../controllers';
 import { FeedMapper } from '../mappers/feed.mapper';
 import { FeedModel } from '../models';
 import { FeedRepository } from '../repositories/feed.repository';
+import { ScrapingServiceFactory } from '../services/scraping-service.factory';
+import { TrendsService } from '../services/trends.service';
 
 const feedMapper = new FeedMapper();
 
@@ -44,6 +49,18 @@ const feedDeleteHandler = new FeedDeleteHandler(
   feedRepository,
 );
 
+const scrapingServiceFactory = new ScrapingServiceFactory(uuidGenerator);
+
+const trendsService = new TrendsService(
+  scrapingServiceFactory,
+  config.scraping,
+);
+
+const trendsSearchHandler = new TrendsSearchHandler(
+  trendsService,
+  feedRepository,
+);
+
 const feedsCreateController = new FeedsCreateController(feedCreateHandler);
 
 const feedsDeleteController = new FeedsDeleteController(feedDeleteHandler);
@@ -54,6 +71,8 @@ const feedsSearchController = new FeedsSearchController(feedSearchHandler);
 
 const feedsUpdateController = new FeedsUpdateController(feedsUpdateHandler);
 
+const trendsController = new TrendsController(trendsSearchHandler);
+
 export {
   feedMapper,
   feedsCreateController,
@@ -61,4 +80,5 @@ export {
   feedsFindController,
   feedsSearchController,
   feedsUpdateController,
+  trendsController,
 };

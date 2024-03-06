@@ -98,7 +98,7 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
       location,
       authors,
       source,
-      date,
+      new Date(date),
     );
   }
 
