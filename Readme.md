@@ -49,6 +49,10 @@ docker compose exec api bash
 ![plot](./images/macro-vision.png)
 ![plot](./images/services-detail.png)
 
+## API Documentation
+API Documentation:
+[API Documentation](https://documenter.getpostman.com/view/7591008/2sA2xfXD2S)
+
 ## Development
 
 ```bash
