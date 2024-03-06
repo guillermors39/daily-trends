@@ -48,13 +48,12 @@ export class FeedRepository implements IFeedRepository {
   async update(feed: FeedEntity): Promise<void> {
     const { uuid, ...dto } = this.mapper.fromEntityToDto(feed);
 
-    const { title, subtitle, body, location, authors } = dto;
+    const { title, body, location, authors } = dto;
 
     await this.model.updateOne(
       { uuid },
       {
         title,
-        subtitle,
         body,
         location,
         authors,

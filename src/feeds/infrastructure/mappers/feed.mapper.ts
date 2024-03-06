@@ -10,9 +10,8 @@ export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
     const mapItem = (entity: FeedEntity) => ({
       uuid: entity.uuid,
       title: entity.title,
-      subtitle: entity.subtitle,
-      authors: entity.authors.map((item) => item),
       body: entity.body,
+      authors: entity.authors.map((item) => item),
       location: entity.location,
       date: entity.date,
       source: {
@@ -30,13 +29,12 @@ export class FeedMapper implements IMapper<FeedEntity, TFeedDto> {
     model: TFeedModelInstance | TFeedModelInstance[],
   ): TFeedDto | TFeedDto[] {
     const mapItem = (model: TFeedModelInstance) => {
-      const { uuid, title, subtitle, authors, body, location, date, source } =
+      const { uuid, title, authors, body, location, date, source } =
         model.toObject();
 
       return {
         uuid,
         title,
-        subtitle,
         authors,
         body,
         location,

@@ -14,7 +14,7 @@ export class FeedResource extends BaseJsonResource {
     return {
       uuid: this.entity.uuid,
       title: this.entity.title,
-      subtitle: this.entity.subtitle,
+      body: this.entity.body,
       authors: this.entity.authors,
       location: this.entity.location,
       source: this.entity.source,
