@@ -2,7 +2,23 @@ import { ValidationException } from '../../../shared/domain/exceptions';
 import { StringVO } from '../../../shared/domain/valueObjects/base.vo';
 import { ESourceCode } from '../enums';
 
-export class Title extends StringVO {}
+export class Title extends StringVO {
+  public static readonly min: number = 3;
+
+  constructor(value: string) {
+    super(value);
+
+    this._validate(value);
+  }
+
+  private _validate(value: string) {
+    if (value.length < Title.min) {
+      throw new ValidationException(
+        `Title must be at least ${Title.min} characters`,
+      );
+    }
+  }
+}
 
 export class Author extends StringVO {}
 
