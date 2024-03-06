@@ -7,6 +7,7 @@ import {
   feedsFindController,
   feedsSearchController,
   feedsUpdateController,
+  trendsController,
 } from '../providers';
 
 const feedRouter = express.Router();
@@ -14,6 +15,8 @@ const feedRouter = express.Router();
 feedRouter.get('/', feedsSearchController.execute.bind(feedsSearchController));
 
 feedRouter.post('/', feedsCreateController.execute.bind(feedsCreateController));
+
+feedRouter.get('/trends', trendsController.execute.bind(trendsController));
 
 feedRouter.get('/:uuid', feedsFindController.execute.bind(feedsFindController));
 

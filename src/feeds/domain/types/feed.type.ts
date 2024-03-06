@@ -10,6 +10,10 @@ export type TFeedCreate = {
   readonly date: Date;
 };
 
+export type TFeedCreateFromSource = TFeedCreate & {
+  source: TSource;
+};
+
 export type TFeedUpdate = TFeedCreate & {
   readonly uuid: TUuid;
 };
@@ -33,4 +37,9 @@ export type TFeedDto = {
   readonly authors: string[];
   readonly source: TSource;
   readonly date: Date;
+};
+
+export type TTrendsFilter = {
+  readonly sources?: ESourceCode[];
+  readonly limit?: number;
 };

@@ -1,7 +1,7 @@
 import { AggregateEntity } from '../../../shared/domain/entities';
 import { TUuid } from '../../../shared/domain/types';
 import { ESourceCode } from '../enums';
-import { TFeedCreate, TFeedDto } from '../types';
+import { TFeedCreate, TFeedCreateFromSource, TFeedDto } from '../types';
 
 class Source {
   constructor(
@@ -64,6 +64,31 @@ export class FeedEntity extends AggregateEntity implements TFeedDto {
     const { title, subtitle, body, location, authors, date } = dto;
 
     const source = Source.fromLocal(uuid);
+
+    return new FeedEntity(
+      uuid,
+      title,
+      subtitle,
+      body,
+      location,
+      authors,
+      source,
+      new Date(date),
+    );
+  }
+
+  static createFromSource(uuid: TUuid, dto: TFeedCreateFromSource): FeedEntity {
+    const {
+      title,
+      subtitle,
+      body,
+      location,
+      authors,
+      date,
+      source: sourceDto,
+    } = dto;
+
+    const source = new Source(sourceDto.code, sourceDto.url);
 
     return new FeedEntity(
       uuid,

@@ -29,7 +29,7 @@ export class FeedRepository implements IFeedRepository {
     private readonly paginator: IPaginatorService,
   ) {}
 
-  async create(feed: FeedEntity): Promise<void> {
+  async create(...feed: FeedEntity[]): Promise<void> {
     const dto = this.mapper.fromEntityToDto(feed);
 
     await this.model.create(dto);

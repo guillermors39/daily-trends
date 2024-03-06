@@ -1,16 +1,7 @@
 import { HydratedDocument, Model } from 'mongoose';
 
-import { TPaginationSearch } from '../../domain/contracts/app.contract';
+import { TPaginationParams } from '../../../feeds/domain/contracts';
 import { PaginatedDto } from '../../domain/dtos/paginated.dto';
-
-type TSort = {
-  [key: string]: 1 | -1;
-};
-
-export type TPaginationParams = TPaginationSearch & {
-  filters?: object;
-  sort?: TSort;
-};
 
 export interface IPaginatorService {
   paginate<T>(
