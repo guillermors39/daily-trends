@@ -35,6 +35,26 @@ export class ElMundoScrapingService extends FeedScrapingService {
         feedArticles = feedArticles.slice(0, limit);
       }
 
+      const getAuthors = (authorsTexts: string[]): string[] => {
+        return authorsTexts.reduce((carry: string[], item) => {
+          let parts = item.split('\n');
+
+          const text = parts.length > 1 ? parts[1].trim() : parts[0].trim();
+
+          parts = text.split('|');
+
+          if (parts.length > 1) {
+            const authors = parts.map((author) => author.trim());
+
+            carry.push(...authors);
+          } else {
+            carry.push(text);
+          }
+
+          return carry;
+        }, []);
+      };
+
       return feedArticles.map((article): TFeedCreateFromSource => {
         const titleLink = article.querySelector('a') as HTMLAnchorElement;
 
@@ -42,15 +62,11 @@ export class ElMundoScrapingService extends FeedScrapingService {
 
         const title = titleLink.innerText;
 
-        const authorsNameSpan = Array.from(
+        const authorsText = Array.from(
           article.querySelectorAll<HTMLElement>(`${baseClass}-name`),
-        );
+        ).map((item) => item.innerText);
 
-        const authors = authorsNameSpan.map((item) => {
-          const text = item.innerText.split('\n');
-
-          return text.length > 1 ? text[1].trim() : text[0].trim();
-        });
+        const authors = getAuthors(authorsText);
 
         const locationsSpan = Array.from(
           article.querySelectorAll<HTMLElement>(`${baseClass}-location`),
