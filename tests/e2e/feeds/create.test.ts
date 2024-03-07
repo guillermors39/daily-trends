@@ -3,6 +3,7 @@ import request from 'supertest';
 
 import { FeedEntity } from '../../../src/feeds/domain/entities';
 import { TFeedDto } from '../../../src/feeds/domain/types';
+import { FeedModel } from '../../../src/feeds/infrastructure/models';
 import { feedRoute } from '../../../src/feeds/infrastructure/routers';
 import { App } from '../../../src/shared/infrastructure/app';
 import {
@@ -11,9 +12,12 @@ import {
 } from '../../../src/shared/infrastructure/configs/config';
 import { connectors } from '../../../src/shared/infrastructure/configs/connectors';
 import { FeedCreateMother } from '../../feeds/domain/mothers/create.mother';
+import { FeedEntityMother } from '../../feeds/domain/mothers/entity.mother';
 
 describe('Feeds API - Create', () => {
   let app: App;
+
+  const feedDto = FeedEntityMother.createFromLocal().toPrimitive();
 
   const testConfig: TConfig = {
     ...config,
@@ -30,6 +34,8 @@ describe('Feeds API - Create', () => {
     await app.start();
     nock.disableNetConnect();
     nock.enableNetConnect();
+
+    await FeedModel.create(feedDto);
   });
 
   afterEach(() => {
@@ -41,7 +47,7 @@ describe('Feeds API - Create', () => {
     nock.enableNetConnect();
   });
 
-  it('create feeds', async () => {
+  it('should create and return feeds', async () => {
     const feedCreate = FeedCreateMother.create();
     const response = await request(app.server()!)
       .post('/feeds')
@@ -67,5 +73,16 @@ describe('Feeds API - Create', () => {
     ).toBe(true);
 
     expect(feed.date).toBe(expectedDto.date.toISOString());
+  });
+
+  it('should be throw title already exists', async () => {
+    const feedCreate = FeedCreateMother.create({ title: feedDto.title });
+
+    const response = await request(app.server()!)
+      .post('/feeds')
+      .send(feedCreate)
+      .expect(422);
+
+    expect(response.body.error).toBeDefined();
   });
 });

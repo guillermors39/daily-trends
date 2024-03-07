@@ -13,11 +13,18 @@ import {
 import { connectors } from '../../../src/shared/infrastructure/configs/connectors';
 import { FeedCreateMother } from '../../feeds/domain/mothers/create.mother';
 import { FeedEntityMother } from '../../feeds/domain/mothers/entity.mother';
+import { UuidBuilder } from '../../shared/domain/builders/uuid.builder';
 
 describe('Feeds API - Update', () => {
   let app: App;
 
   const feedDto: TFeedDto = FeedEntityMother.createFromLocal().toPrimitive();
+
+  const feedExternalDto: TFeedDto =
+    FeedEntityMother.createFromExternal().toPrimitive();
+
+  const feedLocalDto: TFeedDto =
+    FeedEntityMother.createFromLocal().toPrimitive();
 
   const testConfig: TConfig = {
     ...config,
@@ -35,7 +42,7 @@ describe('Feeds API - Update', () => {
     nock.disableNetConnect();
     nock.enableNetConnect();
 
-    await FeedModel.create(feedDto);
+    await FeedModel.create(feedDto, feedExternalDto, feedLocalDto);
   });
 
   afterEach(() => {
@@ -78,5 +85,42 @@ describe('Feeds API - Update', () => {
     ).toBe(true);
 
     expect(data.date).toBe(expectedDto.date.toISOString());
+  });
+
+  it('should throw not found', async () => {
+    const uuid = UuidBuilder.random();
+
+    const feedUpdateDto = FeedCreateMother.create();
+
+    const response = await request(app.server()!)
+      .put(`/feeds/${uuid}`)
+      .send(feedUpdateDto)
+      .expect(404);
+
+    expect(response.body.error).toBeDefined();
+  });
+
+  it('should be throw title already exists', async () => {
+    const feedUpdateDto = FeedCreateMother.create({
+      title: feedLocalDto.title,
+    });
+
+    const response = await request(app.server()!)
+      .put(`/feeds/${feedDto.uuid}`)
+      .send(feedUpdateDto)
+      .expect(422);
+
+    expect(response.body.error).toBeDefined();
+  });
+
+  it('should throw cannot modify external', async () => {
+    const feedUpdateDto = FeedCreateMother.create();
+
+    const response = await request(app.server()!)
+      .put(`/feeds/${feedExternalDto.uuid}`)
+      .send(feedUpdateDto)
+      .expect(422);
+
+    expect(response.body.error).toBeDefined();
   });
 });

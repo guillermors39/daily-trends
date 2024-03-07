@@ -11,6 +11,7 @@ import {
 } from '../../../src/shared/infrastructure/configs/config';
 import { connectors } from '../../../src/shared/infrastructure/configs/connectors';
 import { FeedEntityMother } from '../../feeds/domain/mothers/entity.mother';
+import { UuidBuilder } from '../../shared/domain/builders/uuid.builder';
 
 describe('Feeds API - Find', () => {
   let app: App;
@@ -45,7 +46,7 @@ describe('Feeds API - Find', () => {
     nock.enableNetConnect();
   });
 
-  it('update feeds', async () => {
+  it('should return feed', async () => {
     const response = await request(app.server()!)
       .get(`/feeds/${feedDto.uuid}`)
       .expect(200);
@@ -68,5 +69,15 @@ describe('Feeds API - Find', () => {
     );
 
     expect(data.date).toBe(feedDto.date.toISOString());
+  });
+
+  it('should return not found', async () => {
+    const uuid = UuidBuilder.random();
+
+    const response = await request(app.server()!)
+      .get(`/feeds/${uuid}`)
+      .expect(404);
+
+    expect(response.body.error).toBeDefined();
   });
 });
