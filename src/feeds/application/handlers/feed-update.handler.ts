@@ -1,6 +1,6 @@
 import { IHandler } from '../../../shared/domain/contracts/app.contract';
 import { TUuid } from '../../../shared/domain/types';
-import { IFeedValidator, IFeedUpdateRepository } from '../../domain/contracts';
+import { IFeedUpdateRepository, IFeedValidator } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedUpdate } from '../../domain/types';
 
