@@ -21,9 +21,7 @@ export class ElPaisScrapingService extends FeedScrapingService {
   protected script(): TScriptFunc {
     /* istanbul ignore next */
     return (date, code, limit): TFeedCreateFromSource[] => {
-      const section = document.querySelector(
-        'section[data-dtm-region="portada_apertura"]',
-      );
+      const section = document.querySelector('section');
 
       if (!section) return [];
 
