@@ -1,3 +1,5 @@
+import http from 'node:http';
+
 import express, { Express } from 'express';
 
 import { TConfig } from './configs/config';
@@ -8,6 +10,7 @@ import { TRoute } from './types';
 export class App {
   private readonly port: number;
   private readonly express: Express;
+  private httpServer?: http.Server;
 
   private routes: TRoute[] = [];
   private connectors: IConnector[] = [];
@@ -25,18 +28,36 @@ export class App {
     await this.connections();
 
     this.setErrorHandler();
-
-    this.express.listen(this.port, () => {
-      console.log(`[APP] - Starting application on port: ${this.port}`);
+    this.httpServer = this.express.listen(this.port, () => {
+      console.info(`[APP] - Starting application on port: ${this.port}`);
     });
   }
 
-  addRoutes(routes: TRoute[]) {
+  async stop(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.httpServer) {
+        this.httpServer.close((error) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve();
+        });
+      }
+
+      return resolve();
+    });
+  }
+
+  addRoutes(...routes: TRoute[]) {
     this.routes.push(...routes);
   }
 
   addConnector(...connectors: IConnector[]) {
     this.connectors.push(...connectors);
+  }
+
+  server(): http.Server | undefined {
+    return this.httpServer;
   }
 
   private async connections() {
