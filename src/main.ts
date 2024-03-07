@@ -6,7 +6,7 @@ import { routes } from './shared/infrastructure/configs/route';
 async function bootstrap() {
   const app = new App(config);
 
-  app.addRoutes(routes);
+  app.addRoutes(...routes);
 
   app.addConnector(...connectors);
 
