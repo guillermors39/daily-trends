@@ -115,11 +115,12 @@ export class FeedEntity extends AggregateEntity {
     return this.base(dto);
   }
 
-  update({ title, body, location, authors }: TFeedCreate): void {
+  update({ title, body, location, authors, date }: TFeedCreate): void {
     this._title = new Title(title);
     this._body = new StringVO(body);
     this._authors = AuthorsCollection.fromStrings(authors);
     this._location = new StringVO(location);
+    this._date = new DateVO(date);
   }
 
   toPrimitive(): TFeedDto {
