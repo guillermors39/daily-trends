@@ -18,7 +18,7 @@ export const feedDeleteTest = (app: App) =>
     });
 
     afterAll(async () => {
-      await FeedModel.deleteOne({ uuid: feedExternalDto.uuid });
+      await FeedModel.deleteMany({ uuid: { $in: [feedExternalDto.uuid] } });
     });
 
     it('should delete feeds', async () => {
