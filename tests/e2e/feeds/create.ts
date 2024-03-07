@@ -3,6 +3,7 @@ import request from 'supertest';
 import { FeedEntity } from '../../../src/feeds/domain/entities';
 import { TFeedDto } from '../../../src/feeds/domain/types';
 import { FeedModel } from '../../../src/feeds/infrastructure/models';
+import { TUuid } from '../../../src/shared/domain/types';
 import { App } from '../../../src/shared/infrastructure/app';
 import { FeedCreateMother } from '../../feeds/domain/mothers/create.mother';
 import { FeedEntityMother } from '../../feeds/domain/mothers/entity.mother';
@@ -11,12 +12,14 @@ export const feedCreateTest = (app: App) =>
   describe('Feeds API - Create', () => {
     const feedDto = FeedEntityMother.createFromLocal().toPrimitive();
 
+    const uuids: TUuid[] = [];
+
     beforeAll(async () => {
       await FeedModel.create(feedDto);
     });
 
     afterAll(async () => {
-      await FeedModel.deleteOne({ uuid: feedDto.uuid });
+      await FeedModel.deleteMany({ uuid: { $in: [feedDto.uuid, ...uuids] } });
     });
 
     it('should create and return feeds', async () => {
@@ -37,6 +40,8 @@ export const feedCreateTest = (app: App) =>
 
       expect(typeof feed.uuid === 'string').toBe(true);
       expect(typeof feed.source === 'object').toBe(true);
+
+      uuids.push(feed.uuid);
 
       expect(feed.source.code).toBe(expectedDto.source.code);
       expect(feed.source.url).toBe(expectedDto.source.url);
