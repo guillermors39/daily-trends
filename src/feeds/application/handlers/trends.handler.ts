@@ -11,7 +11,7 @@ export class TrendsSearchHandler
     private readonly repository: IFeedCreateRepository,
   ) {}
 
-  async execute(dto: TTrendsFilter): Promise<FeedEntity[]> {
+  async execute(dto: TTrendsFilter = {}): Promise<FeedEntity[]> {
     const entities = await this.service.execute(dto);
 
     await this.repository.create(...entities);
