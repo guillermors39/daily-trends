@@ -15,7 +15,7 @@ describe('FeedUpdateHandler Test', () => {
   let data: TFeedCreate;
   let repository: IFeedUpdateRepository;
 
-  const entityMocked = FeedEntityMother.create();
+  const entityMocked = FeedEntityMother.createFromLocal();
 
   const MockFinder = jest.fn(
     (): IHandler<TUuid, FeedEntity> => ({
