@@ -1,7 +1,7 @@
 import { FeedUpdateHandler } from '../../../../src/feeds/application/handlers';
 import {
-  IFeedValidator,
   IFeedUpdateRepository,
+  IFeedValidator,
 } from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { TFeedCreate, TFeedUpdate } from '../../../../src/feeds/domain/types';

@@ -2,7 +2,7 @@ import {
   IHandler,
   IUuidGenerator,
 } from '../../../shared/domain/contracts/app.contract';
-import { IFeedValidator, IFeedCreateRepository } from '../../domain/contracts';
+import { IFeedCreateRepository, IFeedValidator } from '../../domain/contracts';
 import { FeedEntity } from '../../domain/entities';
 import { TFeedCreate } from '../../domain/types';
 

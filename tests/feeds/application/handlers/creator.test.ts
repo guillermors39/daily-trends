@@ -1,7 +1,7 @@
 import { FeedCreateHandler } from '../../../../src/feeds/application/handlers';
 import {
-  IFeedValidator,
   IFeedCreateRepository,
+  IFeedValidator,
 } from '../../../../src/feeds/domain/contracts';
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { IUuidGenerator } from '../../../../src/shared/domain/contracts/app.contract';

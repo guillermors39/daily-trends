@@ -1,4 +1,4 @@
-import { IFeedValidator, IFeedFindByTitleRepository } from '../contracts';
+import { IFeedFindByTitleRepository, IFeedValidator } from '../contracts';
 import { FeedEntity } from '../entities';
 import { FeedTitleAlreadyExistsException } from '../exceptions';
 
