@@ -7,9 +7,12 @@ services:
       args:
         - UID=${DOCKER_UID}
         - GID=${DOCKER_GID}
+        - GITUSER=${DOCKER_GIT_USER}
+        - GITEMAIL=${DOCKER_GIT_EMAIL}
     container_name: ${DOCKER_CONTAINER_NAME_SERVER}
     volumes:
       - ${DOCKER_DIRECTORY_APP}:/app
+      - ${DOCKER_DIRECTORY_SSH_KEY}:/home/node/.ssh
     ports:
       - "${DOCKER_HTTP_PORT}:${PORT}"
     networks:

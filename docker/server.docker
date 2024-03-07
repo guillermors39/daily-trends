@@ -17,11 +17,19 @@ RUN apt-get update \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install git
+
 RUN npm install -g typescript
 
 COPY ./entrypoints/server.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 USER node:node
+
+ARG GITUSER=node
+ARG GITEMAIL=node@node.com
+
+RUN git config --global user.email "${GITEMAIL}" \
+  && git config --global user.name "${GITUSER}"
 
 WORKDIR /app

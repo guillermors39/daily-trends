@@ -20,5 +20,10 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'jest.config.js', 'puppeteer.config.cjs'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    'jest.config.js',
+    'puppeteer.config.cjs',
+    'commitlint.config.cjs',
+  ],
 };
