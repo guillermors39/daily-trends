@@ -23,7 +23,7 @@ describe('FeedRepository Test', () => {
   });
 
   it('create - ok', async () => {
-    const feed = FeedEntityMother.create();
+    const feed = FeedEntityMother.createFromLocal();
     const mappedDto = feedMapper.fromEntityToDto(feed);
 
     await repository.create(feed);

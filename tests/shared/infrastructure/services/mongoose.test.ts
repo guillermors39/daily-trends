@@ -1,5 +1,5 @@
-import { config } from '../../../src/shared/infrastructure/configs/config';
-import { MongooseConnectorService } from '../../../src/shared/infrastructure/services/mongoose.service';
+import { config } from '../../../../src/shared/infrastructure/configs/config';
+import { MongooseConnectorService } from '../../../../src/shared/infrastructure/services/mongoose.service';
 
 describe('MongooseConnectorService', () => {
   let connector: MongooseConnectorService;

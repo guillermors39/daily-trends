@@ -1,6 +1,9 @@
+import { faker } from '@faker-js/faker';
+
 import { FeedEntity } from '../../../../src/feeds/domain/entities';
 import { ESourceCode } from '../../../../src/feeds/domain/enums';
-import { TFeedCreate } from '../../../../src/feeds/domain/types';
+import { TFeedCreate, TFeedDto } from '../../../../src/feeds/domain/types';
+import { SourceCode } from '../../../../src/feeds/domain/valueObjects/feed.vo';
 import { UuidBuilder } from '../../../shared/domain/builders/uuid.builder';
 import {
   FeedCreateMother,
@@ -8,19 +11,36 @@ import {
 } from './create.mother';
 
 export class FeedEntityMother {
-  static create(dto: Partial<TFeedCreate> = {}): FeedEntity {
-    const uuid = UuidBuilder.random();
+  static createFromLocal(dto: Partial<TFeedDto> = {}): FeedEntity {
+    const { uuid = UuidBuilder.random() } = dto;
 
     return FeedEntity.create(uuid, FeedCreateMother.create(dto));
   }
 
-  static createFromSource(dto: TFeedCreateFromSourcePartial = {}): FeedEntity {
+  private static createFromSource(
+    dto: TFeedCreateFromSourcePartial = {},
+  ): FeedEntity {
     const uuid = UuidBuilder.random();
 
     return FeedEntity.createFromSource(
       uuid,
       FeedCreateMother.createFromSource(dto),
     );
+  }
+
+  static createFromExternal(dto: Partial<TFeedCreate> = {}): FeedEntity {
+    const externals = SourceCode.availables.filter(
+      (item) => item !== ESourceCode.local,
+    );
+
+    const fromSourceDto = {
+      ...dto,
+      source: {
+        code: faker.helpers.arrayElement(externals),
+      },
+    };
+
+    return this.createFromSource(fromSourceDto);
   }
 
   static createFromElPais(dto: Partial<TFeedCreate> = {}): FeedEntity {
