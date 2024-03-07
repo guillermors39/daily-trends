@@ -9,7 +9,7 @@ describe('FeedFindeHandler Test', () => {
   let handler: FeedFindHandler;
   let repository: IFeedFindRepository;
 
-  const entityMocked = FeedEntityMother.create();
+  const entityMocked = FeedEntityMother.createFromLocal();
 
   const MockRepository = jest.fn(() => ({
     find: jest.fn((uuid: TUuid) => {

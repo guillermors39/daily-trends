@@ -4,7 +4,7 @@ import { TUuid } from '../../../../src/shared/domain/types';
 import { FeedEntityMother } from '../../domain/mothers/entity.mother';
 
 describe('FeedDeleteHandler Test', () => {
-  const entityMocked = FeedEntityMother.create();
+  const entityMocked = FeedEntityMother.createFromLocal();
 
   const finder = {
     execute: jest.fn((uuid: TUuid) => {

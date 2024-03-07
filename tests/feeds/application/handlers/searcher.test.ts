@@ -15,7 +15,7 @@ describe('FeedSearchHandler Test', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should return a paginated entity with defaults values', async () => {
