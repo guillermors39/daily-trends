@@ -19,6 +19,8 @@ RUN apt-get update \
 
 RUN apt-get install git
 
+RUN apt-get update && apt-get install git-flow
+
 RUN npm install -g typescript
 
 COPY ./entrypoints/server.sh /entrypoint.sh
