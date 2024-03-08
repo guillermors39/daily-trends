@@ -1,6 +1,6 @@
-/** @type {import('@commitlint/types').UserConfig} */
-module.export = {
+/**
+ * @type {import('@commitlint/types').UserConfig}
+ * */
+module.exports = {
   extends: ['@commitlint/config-conventional'],
 };
-
-export default config;
